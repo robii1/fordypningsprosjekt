@@ -3,8 +3,7 @@ import { Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './Screens/Home';
-import HistoryScreen from './Screens/History';
-import TrainingScreen from './Screens/Training';
+
 
 // Importer bilder
 const homeIcon = require('./Pictures/home.png');
@@ -36,8 +35,6 @@ const BottomTabs = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Training" component={TrainingScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 };
