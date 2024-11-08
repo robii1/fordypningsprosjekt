@@ -1,15 +1,24 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Welcome to the Home Screen</Text>
-        <Button
-          title="Go to Training"
-          onPress={() => navigation.navigate('Training')}
-        />
+      {/* Grafen vil være her */}
+      <View style={styles.chartContainer}>
+        <Text style={styles.chartPlaceholder}>[Graf]</Text>
+      </View>
+
+      {/* Boksene for "Feateague" og "Exercise" */}
+      <View style={styles.boxContainer}>
+        <View style={styles.infoBox}>
+          <Text style={styles.boxTitle}>Feateague</Text>
+          <Text style={styles.boxContent}>Details...</Text>
+        </View>
+        <View style={styles.infoBox}>
+          <Text style={styles.boxTitle}>Exercise</Text>
+          <Text style={styles.boxContent}>Details...</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -23,13 +32,41 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1e1e1e',
+    padding: 20,
   },
-  content: {
+  chartContainer: {
+    width: '100%',
+    height: 250,
+    backgroundColor: '#333',
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
   },
-  title: {
-    fontSize: 24,
-    color: '#ffd700',
+  chartPlaceholder: {
+    color: '#888',
+    fontSize: 18,
+  },
+  boxContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  infoBox: {
+    flex: 1,
+    backgroundColor: '#333',
+    borderRadius: 15,
+    padding: 20,
+    marginHorizontal: 10,
+    alignItems: 'center',
+  },
+  boxTitle: {
+    fontSize: 18,
+    color: '#00c8ff',
+    marginBottom: 10,
+  },
+  boxContent: {
+    fontSize: 16,
+    color: '#fff',
   },
 });
