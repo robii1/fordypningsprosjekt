@@ -1,0 +1,22 @@
+{
+    "sessions": [
+      {
+        "treningsregistreringID": 1,
+        "utøverID": 1,
+        "dato": "2024-11-01",
+        "varighet": 60,
+        "øvelsestype": "Kondisjon",
+        "tretthet": 5,
+        "kommentar": "Bra energi!"
+      },
+      {
+        "treningsregistreringID": 2,
+        "utøverID": 1,
+        "dato": "2024-10-29",
+        "varighet": 45,
+        "øvelsestype": "Styrke",
+        "tretthet": 7,
+        "kommentar": "Litt sliten"
+      }
+    ]
+  }
