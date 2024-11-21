@@ -1,4 +1,16 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "username": "testbruker",
+      "password": "1234"
+    },
+    {
+      "id": 2,
+      "username": "robin",
+      "password": "salte"
+    }
+  ],
   "sessions": [
     {
       "treningsregistreringID": 1,

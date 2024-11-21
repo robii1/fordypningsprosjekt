@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, Picker, FlatList } from 'react-native';
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
-import { LineChart } from 'react-native-chart-kit'; // For å vise grafen
-import { Dimensions } from 'react-native';
 
 const HomeScreen = () => {
   const [selectedExercise, setSelectedExercise] = useState('Knebøy');
   const [exerciseData, setExerciseData] = useState([]);
+  const exercises = ['Knebøy', 'Markløft', 'Benkpress']; // Øvelsesalternativer
 
   useEffect(() => {
     // Hent dummydata fra API
@@ -21,46 +20,50 @@ const HomeScreen = () => {
       .catch((error) => console.error('Error fetching data:', error));
   }, [selectedExercise]);
 
-  const chartData = {
-    labels: exerciseData.map((item) => item.dato),
-    datasets: [
-      {
-        data: exerciseData.map((item) => item.vekt),
-      },
-    ],
+  const renderBarChart = () => {
+    const maxWeight = Math.max(...exerciseData.map((item) => item.vekt), 0);
+
+    return (
+      <View style={styles.chartContainer}>
+        {exerciseData.map((item, index) => (
+          <View key={index} style={styles.barContainer}>
+            <View
+              style={[
+                styles.bar,
+                {
+                  height: `${(item.vekt / maxWeight) * 100}%`,
+                },
+              ]}
+            />
+            <Text style={styles.barLabel}>{item.dato}</Text>
+          </View>
+        ))}
+      </View>
+    );
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Velg en øvelse</Text>
-      <Picker
-        selectedValue={selectedExercise}
-        style={styles.picker}
-        onValueChange={(itemValue) => setSelectedExercise(itemValue)}
-      >
-        <Picker.Item label="Knebøy" value="Knebøy" />
-        <Picker.Item label="Markløft" value="Markløft" />
-        {/* Legg til flere øvelser her */}
-      </Picker>
 
-      <View style={styles.chartContainer}>
-        <LineChart
-          data={chartData}
-          width={Dimensions.get('window').width * 0.9}
-          height={220}
-          chartConfig={{
-            backgroundColor: '#333',
-            backgroundGradientFrom: '#1e1e1e',
-            backgroundGradientTo: '#1e1e1e',
-            color: (opacity = 1) => `rgba(0, 200, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          }}
-          bezier
-          style={{
-            borderRadius: 16,
-          }}
-        />
+      {/* Øvelsesknapper */}
+      <View style={styles.buttonContainer}>
+        {exercises.map((exercise) => (
+          <TouchableOpacity
+            key={exercise}
+            style={[
+              styles.exerciseButton,
+              selectedExercise === exercise && styles.selectedButton,
+            ]}
+            onPress={() => setSelectedExercise(exercise)}
+          >
+            <Text style={styles.exerciseButtonText}>{exercise}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
+
+      {/* Enkel stolpediagram */}
+      {exerciseData.length > 0 ? renderBarChart() : <Text style={styles.noDataText}>Ingen data tilgjengelig</Text>}
 
       <FlatList
         data={exerciseData}
@@ -68,8 +71,7 @@ const HomeScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.historyItem}>
             <Text style={styles.detailsText}>
-              {item.dato}: {item.vekt}kg, {item.repetisjoner} reps, {item.serier}{' '}
-              serier
+              {item.dato}: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
             </Text>
           </View>
         )}

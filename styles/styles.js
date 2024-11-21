@@ -2,6 +2,51 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   input: {
+    barContainer: {
+      alignItems: 'center',
+      marginHorizontal: 5,
+    },
+    bar: {
+      width: 20,
+      backgroundColor: '#00c8ff',
+      borderRadius: 5,
+      marginBottom: 5,
+    },
+    barLabel: {
+      color: '#fff',
+      fontSize: 12,
+    },
+    exerciseButton: {
+      backgroundColor: '#333',
+      padding: 10,
+      borderRadius: 5,
+      marginHorizontal: 5,
+    },
+    selectedButton: {
+      backgroundColor: '#00c8ff',
+    },
+    exerciseButtonText: {
+      color: '#fff',
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    exerciseButton: {
+      backgroundColor: '#333',
+      borderRadius: 10,
+      padding: 10,
+      marginHorizontal: 5,
+    },
+    selectedButton: {
+      backgroundColor: '#00c8ff',
+    },
+    exerciseButtonText: {
+      color: '#fff',
+      fontSize: 16,
+    },
     backgroundColor: '#333',
     color: '#fff',
     borderRadius: 5,
