@@ -55,8 +55,9 @@ const BottomTabs = () => {
         tabBarStyle: { backgroundColor: '#1e1e1e', height: 80 },
       })}
     >
-      <Tab.Screen name="History" component={HistoryScreen} options={{ title: 'Historikk' }} />
+    
       <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Hjem' }} />
+      <Tab.Screen name="History" component={HistoryScreen} options={{ title: 'Historikk' }} />
       <Tab.Screen name="Training" component={TrainingScreen} options={{ title: 'Trening' }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Innstillinger' }} />
     </Tab.Navigator>

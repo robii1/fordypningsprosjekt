@@ -1,50 +1,66 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker'; // Oppdatert import
+import { View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import styles from '../styles/styles';
 
 const TrainingScreen = () => {
   const [øvelsestype, setØvelsestype] = useState('');
   const [repetisjoner, setRepetisjoner] = useState('');
   const [serier, setSerier] = useState('');
-  const [tretthet, setTretthet] = useState('1'); // Rullegardinverdi for tretthet
+  const [vekt, setVekt] = useState(''); // Nytt felt for vekt
+  const [tretthet, setTretthet] = useState('1');
   const [kommentar, setKommentar] = useState('');
-  const [exercises, setExercises] = useState([]); // Liste over øvelser
+  const [exercises, setExercises] = useState([]);
 
-  // Funksjon for å legge til en øvelse til listen
   const addExercise = () => {
     const newExercise = {
       id: exercises.length + 1,
       øvelsestype,
       repetisjoner,
       serier,
+      vekt, // Legger til vekt i øvelsen
     };
     setExercises([...exercises, newExercise]);
     setØvelsestype('');
     setRepetisjoner('');
     setSerier('');
+    setVekt('');
   };
 
-  // Funksjon for å lagre økten ved å trykke "Finish"
-  const finishSession = () => {
+  const finishSession = async () => {
     const newSession = {
       dato: new Date().toISOString().split('T')[0],
       tretthet: parseInt(tretthet),
       kommentar,
       exercises,
     };
-    console.log("Økten er lagret:", newSession);
 
-    // Tilbakestill skjema etter lagring
-    setExercises([]);
-    setTretthet('1');
-    setKommentar('');
+    try {
+      const response = await fetch('http://10.0.2.2:3000/sessions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSession),
+      });
+
+      if (response.ok) {
+        console.log('Økten ble lagret:', newSession);
+        setExercises([]);
+        setTretthet('1');
+        setKommentar('');
+      } else {
+        console.error('Feil ved lagring av økten');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Trening</Text>
-      
-      {/* Inputfelt for å legge til en øvelse */}
+
       <TextInput
         style={styles.input}
         placeholder="Øvelsestype"
@@ -68,21 +84,29 @@ const TrainingScreen = () => {
         value={serier}
         onChangeText={setSerier}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Vekt (kg)" // Nytt felt for vekt
+        placeholderTextColor="#999"
+        keyboardType="numeric"
+        value={vekt}
+        onChangeText={setVekt}
+      />
       <Button title="Legg til øvelse" onPress={addExercise} />
 
-      {/* Vis listen over øvelser */}
       <FlatList
         data={exercises}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.exerciseItem}>
             <Text style={styles.exerciseText}>{item.øvelsestype}</Text>
-            <Text style={styles.exerciseText}>Reps: {item.repetisjoner}, Serier: {item.serier}</Text>
+            <Text style={styles.exerciseText}>
+              Reps: {item.repetisjoner}, Serier: {item.serier}, Vekt: {item.vekt}kg
+            </Text>
           </View>
         )}
       />
 
-      {/* Rullegardinmeny for tretthet */}
       <Text style={styles.label}>Tretthet (1-10)</Text>
       <Picker
         selectedValue={tretthet}
@@ -94,7 +118,6 @@ const TrainingScreen = () => {
         ))}
       </Picker>
 
-      {/* Kommentar */}
       <TextInput
         style={styles.input}
         placeholder="Kommentar"
@@ -103,64 +126,11 @@ const TrainingScreen = () => {
         onChangeText={setKommentar}
       />
 
-      {/* "Finish" knapp for å lagre hele økten */}
       <TouchableOpacity style={styles.finishButton} onPress={finishSession}>
         <Text style={styles.finishButtonText}>Finish</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1e1e1e',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    color: '#ffd700',
-    marginBottom: 20,
-  },
-  input: {
-    backgroundColor: '#333',
-    color: '#fff',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-  },
-  exerciseItem: {
-    backgroundColor: '#333',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  exerciseText: {
-    color: '#00c8ff',
-  },
-  label: {
-    color: '#ffd700',
-    fontSize: 16,
-    marginTop: 10,
-  },
-  picker: {
-    height: 50,
-    color: '#fff',
-    backgroundColor: '#333',
-    marginBottom: 10,
-  },
-  finishButton: {
-    backgroundColor: '#00c8ff',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  finishButtonText: {
-    color: '#1e1e1e',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default TrainingScreen;

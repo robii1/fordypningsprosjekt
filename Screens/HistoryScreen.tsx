@@ -1,29 +1,41 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import styles from '../styles/styles';
 
-const HistoryScreen = () => {
-  // Eksempeldata for tidligere treningsøkter
-  const historyData = [
-    { id: '1', date: '2024-11-01', details: 'Cardio og styrketrening' },
-    { id: '2', date: '2024-10-29', details: 'Full body workout' },
-    { id: '3', date: '2024-10-27', details: 'Kondisjonstrening' },
-    // Flere eksempler kan legges til her
-  ];
+const HistoryScreen = ({ navigation }) => {
+  const [historyData, setHistoryData] = useState([]);
 
-  // Funksjon for å rendere hver treningsøkt
+  useEffect(() => {
+    // Hent data fra sessions i dummydata.json
+    fetch('http://10.0.2.2:3000/sessions')
+      .then((response) => response.json())
+      .then((data) => setHistoryData(data))
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
+
+  // Markerte datoer for kalender basert på sessions
+  const markedDates = historyData.reduce((acc, item) => {
+    acc[item.dato] = { selected: true, marked: true, selectedColor: '#00c8ff' };
+    return acc;
+  }, {});
+
   const renderItem = ({ item }) => (
-    <View style={styles.historyItem}>
-      <Text style={styles.dateText}>{item.date}</Text>
-      <Text style={styles.detailsText}>{item.details}</Text>
-    </View>
+    <TouchableOpacity onPress={() => navigation.navigate('DetaljSide', { details: item })}>
+      <View style={styles.historyItem}>
+        <Text style={styles.dateText}>{item.dato}</Text>
+        <Text style={styles.detailsText}>
+          {item.øvelsestype} - Varighet: {item.varighet} min - Tretthet: {item.tretthet}
+        </Text>
+        <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Treningshistorikk</Text>
       
-      {/* Kalender */}
       <Calendar
         style={styles.calendar}
         theme={{
@@ -34,62 +46,21 @@ const HistoryScreen = () => {
           monthTextColor: '#00c8ff',
           arrowColor: '#ffffff',
         }}
-        markedDates={{
-          '2024-11-01': { selected: true, marked: true, selectedColor: '#00c8ff' },
-          '2024-10-29': { selected: true, marked: true, selectedColor: '#00c8ff' },
-          '2024-10-27': { selected: true, marked: true, selectedColor: '#00c8ff' },
-          // Legg til flere datoer om nødvendig
-        }}
+        markedDates={markedDates}
       />
 
-      {/* Liste over treningsøkter */}
-      <FlatList
-        data={historyData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
-      />
+      {historyData.length === 0 ? (
+        <Text style={styles.noDataText}>Ingen treningsøkter registrert ennå.</Text>
+      ) : (
+        <FlatList
+          data={historyData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.treningsregistreringID.toString()}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
     </SafeAreaView>
   );
 };
 
 export default HistoryScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1e1e1e',
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 24,
-    color: '#ffd700',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  calendar: {
-    marginBottom: 20,
-    borderRadius: 10,
-    paddingBottom: 10,
-    width: '90%', 
-    alignSelf: 'center',
-  },
-  listContainer: {
-    paddingHorizontal: 20,
-  },
-  historyItem: {
-    backgroundColor: '#333',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 15,
-  },
-  dateText: {
-    color: '#00c8ff',
-    fontSize: 18,
-  },
-  detailsText: {
-    color: '#fff',
-    fontSize: 16,
-    marginTop: 5,
-  },
-});
