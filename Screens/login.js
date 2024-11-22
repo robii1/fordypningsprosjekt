@@ -87,6 +87,7 @@ const LoginScreen = ({ setIsLoggedIn }) => {
         </Text>
       </TouchableOpacity>
     </View>
+    
   );
 };
 

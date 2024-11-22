@@ -13,6 +13,7 @@ const homeIcon = require('./Pictures/home.png');
 const historyIcon = require('./Pictures/history.png');
 const playIcon = require('./Pictures/play.png');
 const settingsIcon = require('./Pictures/settings.png');
+const loginIcon = require('./Pictures/login.png')
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +50,7 @@ export default function App() {
                   borderColor: focused ? '#00c8ff' : 'transparent',
                 }}
               >
-                <Image source={iconSource} style={{ width: 40, height: 40, tintColor: color }} />
+                <Image source={loginIcon} style={{ width: 40, height: 40, tintColor: color }} />
               </View>
             );
           },
