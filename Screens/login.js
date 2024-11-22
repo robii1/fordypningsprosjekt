@@ -1,40 +1,31 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Importer navigasjonshooket
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/styles';
 
-const LoginScreen = () => {
+const LoginScreen = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isRegister, setIsRegister] = useState(false);
-  const navigation = useNavigation(); // Bruk navigasjonshooket
 
   const handleLogin = async () => {
     try {
       const response = await fetch('http://10.0.2.2:3000/users');
       const users = await response.json();
-  
+
       const user = users.find((u) => u.username === username);
-  
+
       if (!user) {
         Alert.alert('Feil', 'Bruker finnes ikke. Prøv å registrere deg.');
       } else if (user.password !== password) {
         Alert.alert('Feil', 'Feil passord.');
       } else {
         Alert.alert('Velkommen', `Logget inn som ${user.username}`);
-        navigation.replace('Main'); // Naviger til hovednavigasjonen
+        setIsLoggedIn(true); // Sett brukeren som innlogget
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  
 
   const handleRegister = async () => {
     try {
@@ -90,10 +81,7 @@ const LoginScreen = () => {
       >
         <Text style={styles.finishButtonText}>{isRegister ? 'Registrer' : 'Logg inn'}</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{ marginTop: 20 }}
-        onPress={() => setIsRegister(!isRegister)}
-      >
+      <TouchableOpacity style={{ marginTop: 20 }} onPress={() => setIsRegister(!isRegister)}>
         <Text style={styles.label}>
           {isRegister ? 'Har du allerede en konto? Logg inn' : 'Ingen konto? Registrer deg'}
         </Text>
