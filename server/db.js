@@ -4,9 +4,9 @@ const mysql = require('mysql2');
 const db = mysql.createPool({
     host: 'namox.idi.ntnu.no', // Bruker TCP/IP
     port: 3306, // Standard MySQL-port
-    user: 'robinssa',
-    password: 'DuVPRvTZ', // Passord for databasen
-    database: 'robinssa',
+    user: 'username',
+    password: '', // Passord for databasen
+    database: 'database',
     charset: 'utf8mb4', // Unicode-støtte
 });
 
