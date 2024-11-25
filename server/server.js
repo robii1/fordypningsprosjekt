@@ -6,10 +6,12 @@ const øvelseRoutes = require('./routes/øvelse');
 
 const app = express();
 const PORT = 3000;
+const cors = require('cors');
 
 // Middleware
 app.use(bodyParser.json());
 
+app.use(cors());
 // Ruter
 app.use('/treningsregistrering', treningsregistreringRoutes);
 app.use('/øvelse', øvelseRoutes);

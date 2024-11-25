@@ -47,7 +47,7 @@ export default function App() {
             tabBarShowLabel: false,
             tabBarActiveTintColor: '#00c8ff', // Farge for aktiv tab
             tabBarInactiveTintColor: '#fff', // Farge for inaktive tabs
-            tabBarStyle: { backgroundColor: '#1e1e1e', height: 60 }, // Bunnmeny-styling
+            tabBarStyle: { backgroundColor: '#1e1e1e', height: 60 }, 
           })}
         >
           <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Hjem' }} />

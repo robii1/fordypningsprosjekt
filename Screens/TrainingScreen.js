@@ -1,24 +1,43 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/styles';
+import { getTrainings, postTraining } from '../api'; // prøver ut api på Trainingscreen
 
 const TrainingScreen = () => {
   const [øvelsestype, setØvelsestype] = useState('');
   const [repetisjoner, setRepetisjoner] = useState('');
   const [serier, setSerier] = useState('');
-  const [vekt, setVekt] = useState(''); // Nytt felt for vekt
+  const [vekt, setVekt] = useState('');
   const [tretthet, setTretthet] = useState('1');
   const [kommentar, setKommentar] = useState('');
   const [exercises, setExercises] = useState([]);
+  const [trainings, setTrainings] = useState([]);
+
+  // Hent treningsdata fra serveren
+  useEffect(() => {
+    const fetchTrainings = async () => {
+      try {
+        const data = await getTrainings();
+        setTrainings(data);
+      } catch (error) {
+        Alert.alert('Feil', 'Kunne ikke hente treninger fra serveren.');
+      }
+    };
+    fetchTrainings();
+  }, []);
 
   const addExercise = () => {
+    if (!øvelsestype || !repetisjoner || !serier || !vekt) {
+      Alert.alert('Feil', 'Alle feltene må fylles ut!');
+      return;
+    }
     const newExercise = {
       id: exercises.length + 1,
       øvelsestype,
       repetisjoner,
       serier,
-      vekt, // Legger til vekt i øvelsen
+      vekt,
     };
     setExercises([...exercises, newExercise]);
     setØvelsestype('');
@@ -28,32 +47,29 @@ const TrainingScreen = () => {
   };
 
   const finishSession = async () => {
-    const newSession = {
+    if (exercises.length === 0) {
+      Alert.alert('Feil', 'Legg til minst én øvelse før du lagrer.');
+      return;
+    }
+
+    const newTraining = {
+      utøverID: 1, // Sett riktig bruker-ID (hardkodet her som eksempel)
       dato: new Date().toISOString().split('T')[0],
+      varighet: exercises.length * 10, // Eksempel: 10 minutter per øvelse
+      øvelsestype: exercises.map((e) => e.øvelsestype).join(', '),
       tretthet: parseInt(tretthet),
       kommentar,
-      exercises,
     };
 
     try {
-      const response = await fetch('http://10.0.2.2:3000/sessions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newSession),
-      });
-
-      if (response.ok) {
-        console.log('Økten ble lagret:', newSession);
-        setExercises([]);
-        setTretthet('1');
-        setKommentar('');
-      } else {
-        console.error('Feil ved lagring av økten');
-      }
+      await postTraining(newTraining);
+      Alert.alert('Suksess', 'Treningsøkten ble lagret!');
+      setExercises([]);
+      setTretthet('1');
+      setKommentar('');
+      setTrainings([...trainings, newTraining]); // Oppdater visningen med ny økt
     } catch (error) {
-      console.error('Error:', error);
+      Alert.alert('Feil', 'Kunne ikke lagre treningsøkten.');
     }
   };
 
@@ -86,7 +102,7 @@ const TrainingScreen = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Vekt (kg)" // Nytt felt for vekt
+        placeholder="Vekt (kg)"
         placeholderTextColor="#999"
         keyboardType="numeric"
         value={vekt}
