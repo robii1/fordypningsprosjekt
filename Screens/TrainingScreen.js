@@ -49,28 +49,34 @@ const TrainingScreen = () => {
       Alert.alert('Feil', 'Legg til en øvelse før du lagrer.');
       return;
     }
-
-    const newTraining = {
-      treningsregistreringID: Date.now(), // Generer en unik ID
+  
+    // Opprett treningsdata med detaljer for hver øvelse
+    const newTraining = exercises.map((exercise) => ({
+      treningsregistreringID: Date.now() + Math.random(), // Unik ID basert på tid
       utøverID: 1,
       dato: new Date().toISOString().split('T')[0],
-      varighet: exercises.length * 10,
-      øvelsestype: exercises.map((e) => e.øvelsestype).join(', '),
-      tretthet: parseInt(tretthet),
+      øvelsestype: exercise.øvelsestype,
+      vekt: parseInt(exercise.vekt, 10),
+      repetisjoner: parseInt(exercise.repetisjoner, 10),
+      serier: parseInt(exercise.serier, 10),
+      tretthet: parseInt(tretthet, 10),
       kommentar,
-    };
-
+    }));
+  
     try {
-      await fetch('http://10.0.2.2:3000/sessions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newTraining),
-      });
-
+      // Post hver øvelse separat
+      for (const training of newTraining) {
+        await fetch('http://10.0.2.2:3000/sessions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(training),
+        });
+      }
+  
       Alert.alert('Bra jobbet', 'Treningsøkten ble lagret!');
-      setExercises([]);
+      setExercises([]); // Tøm øvelser etter lagring
       setTretthet('1');
       setKommentar('');
     } catch (error) {
@@ -78,6 +84,7 @@ const TrainingScreen = () => {
       console.error('Error posting session:', error);
     }
   };
+  
 
   return (
     <View style={styles.container}>

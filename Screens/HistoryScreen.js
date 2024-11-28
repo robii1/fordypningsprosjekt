@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, SafeAreaView, FlatList } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import { useFocusEffect } from '@react-navigation/native';
 import styles from '../styles/styles';
 
 const HistoryScreen = () => {
@@ -8,21 +9,25 @@ const HistoryScreen = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [filteredSessions, setFilteredSessions] = useState([]);
 
-  useEffect(() => {
-    // Hent data fra sessions i dummydata.json
-    fetch('http://10.0.2.2:3000/sessions')
-      .then((response) => response.json())
-      .then((data) => setHistoryData(data))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
+  // Hent data når skjermen får fokus
+  useFocusEffect(
+    useCallback(() => {
+      fetch('http://10.0.2.2:3000/sessions')
+        .then((response) => response.json())
+        .then((data) => setHistoryData(data))
+        .catch((error) => console.error('Error fetching data:', error));
+    }, [])
+  );
 
-  useEffect(() => {
-    if (selectedDate) {
-      // Filtrer økter for den valgte datoen
-      const filtered = historyData.filter((item) => item.dato === selectedDate);
-      setFilteredSessions(filtered);
-    }
-  }, [selectedDate, historyData]);
+  // Oppdater filtrerte økter når en dato er valgt
+  useFocusEffect(
+    useCallback(() => {
+      if (selectedDate) {
+        const filtered = historyData.filter((item) => item.dato === selectedDate);
+        setFilteredSessions(filtered);
+      }
+    }, [selectedDate, historyData])
+  );
 
   // Markerte datoer for kalender basert på sessions
   const markedDates = historyData.reduce((acc, item) => {
@@ -32,7 +37,7 @@ const HistoryScreen = () => {
 
   const renderSessionDetails = () => {
     if (filteredSessions.length === 0) {
-      return <Text>Ingen økter for denne datoen.</Text>;
+      return <Text style={styles.noDataText}>Ingen økter for denne datoen.</Text>;
     }
 
     return (
@@ -41,7 +46,7 @@ const HistoryScreen = () => {
         keyExtractor={(item) => item.treningsregistreringID.toString()}
         renderItem={({ item }) => (
           <View style={styles.historyItem}>
-            <Text style={styles.dateText}>{item.dato}</Text>
+            <Text style={styles.detailsText}>{item.dato}</Text>
             <Text style={styles.detailsText}>Øvelse: {item.øvelsestype}</Text>
             <Text style={styles.detailsText}>
               Vekt: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
@@ -73,9 +78,7 @@ const HistoryScreen = () => {
       />
 
       {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          Økter for {selectedDate}:
-        </Text>
+        <Text style={styles.selectedDateText}>Økter for {selectedDate}:</Text>
       )}
       {renderSessionDetails()}
     </SafeAreaView>
