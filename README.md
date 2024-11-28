@@ -7,17 +7,20 @@ Dette er en React Native-applikasjon utviklet for å loggføre treningsøkter, v
 ### Start prosjektet
 
 1. **Start Metro-serveren**:
-   ```bash
+```bash
    npx react-native start
-
+```
 2. **Eller bruk følgende skripter**:
+```bash
 Android:
 
 npx react-native run-android
 
-iOS: 
+#iOS: 
 
 npx react-native run-ios
-
+```
 3. **Start JSON-server**:
+```bash
 json-server --watch data/dummydata.json --port 3000
+```
