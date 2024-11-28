@@ -41,13 +41,13 @@ export default function App() {
               }
 
               return (
-                <Image source={iconSource} style={{ width: 40, height:40, tintColor: color }} />
+                <Image source={iconSource} style={{ marginTop: 15, width: 40, height:40, tintColor: color }} />
               );
             },
             tabBarShowLabel: false,
             tabBarActiveTintColor: '#00c8ff', // Farge for aktiv tab
             tabBarInactiveTintColor: '#fff', // Farge for inaktive tabs
-            tabBarStyle: { backgroundColor: '#1e1e1e', height: 60 }, 
+            tabBarStyle: { backgroundColor: '#1e1e1e', height: 60  }, 
           })}
         >
           <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Hjem' }} />

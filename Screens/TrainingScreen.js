@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/styles';
-import { getTrainings, postTraining } from '../api'; // prøver ut api på Trainingscreen
 
 const TrainingScreen = () => {
   const [øvelsestype, setØvelsestype] = useState('');
@@ -12,24 +11,19 @@ const TrainingScreen = () => {
   const [tretthet, setTretthet] = useState('1');
   const [kommentar, setKommentar] = useState('');
   const [exercises, setExercises] = useState([]);
-  const [trainings, setTrainings] = useState([]);
+  const [availableExercises, setAvailableExercises] = useState([]);
 
-  // Hent treningsdata fra serveren
+  // Hent øvelser fra dummydata.json
   useEffect(() => {
-    const fetchTrainings = async () => {
-      try {
-        const data = await getTrainings();
-        setTrainings(data);
-      } catch (error) {
-        Alert.alert('Feil', 'Kunne ikke hente treninger fra serveren.');
-      }
-    };
-    fetchTrainings();
+    fetch('http://10.0.2.2:3000/exercises')
+      .then((response) => response.json())
+      .then((data) => setAvailableExercises(data))
+      .catch((error) => console.error('Error fetching exercises:', error));
   }, []);
 
   const addExercise = () => {
     if (!øvelsestype || !repetisjoner || !serier || !vekt) {
-      Alert.alert('Feil', 'Alle feltene må fylles ut!');
+      Alert.alert('Feil', 'Alt må fylles ut!');
       return;
     }
     const newExercise = {
@@ -46,30 +40,42 @@ const TrainingScreen = () => {
     setVekt('');
   };
 
+  const removeExercise = (id) => {
+    setExercises(exercises.filter((exercise) => exercise.id !== id));
+  };
+
   const finishSession = async () => {
     if (exercises.length === 0) {
-      Alert.alert('Feil', 'Legg til minst én øvelse før du lagrer.');
+      Alert.alert('Feil', 'Legg til en øvelse før du lagrer.');
       return;
     }
 
     const newTraining = {
-      utøverID: 1, // Sett riktig bruker-ID (hardkodet her som eksempel)
+      treningsregistreringID: Date.now(), // Generer en unik ID
+      utøverID: 1,
       dato: new Date().toISOString().split('T')[0],
-      varighet: exercises.length * 10, // Eksempel: 10 minutter per øvelse
+      varighet: exercises.length * 10,
       øvelsestype: exercises.map((e) => e.øvelsestype).join(', '),
       tretthet: parseInt(tretthet),
       kommentar,
     };
 
     try {
-      await postTraining(newTraining);
-      Alert.alert('Suksess', 'Treningsøkten ble lagret!');
+      await fetch('http://10.0.2.2:3000/sessions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTraining),
+      });
+
+      Alert.alert('Bra jobbet', 'Treningsøkten ble lagret!');
       setExercises([]);
       setTretthet('1');
       setKommentar('');
-      setTrainings([...trainings, newTraining]); // Oppdater visningen med ny økt
     } catch (error) {
       Alert.alert('Feil', 'Kunne ikke lagre treningsøkten.');
+      console.error('Error posting session:', error);
     }
   };
 
@@ -77,13 +83,18 @@ const TrainingScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Trening</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Øvelsestype"
-        placeholderTextColor="#999"
-        value={øvelsestype}
-        onChangeText={setØvelsestype}
-      />
+      {/* Picker for å velge øvelsestype */}
+      <Picker
+        selectedValue={øvelsestype}
+        style={styles.picker}
+        onValueChange={(itemValue) => setØvelsestype(itemValue)}
+      >
+        <Picker.Item label="Velg øvelse" value="" />
+        {availableExercises.map((exercise) => (
+          <Picker.Item key={exercise.øvelseID} label={exercise.navn} value={exercise.navn} />
+        ))}
+      </Picker>
+
       <TextInput
         style={styles.input}
         placeholder="Repetisjoner"
@@ -115,10 +126,17 @@ const TrainingScreen = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.exerciseItem}>
-            <Text style={styles.exerciseText}>{item.øvelsestype}</Text>
-            <Text style={styles.exerciseText}>
-              Reps: {item.repetisjoner}, Serier: {item.serier}, Vekt: {item.vekt}kg
-            </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View>
+                <Text style={styles.exerciseText}>{item.øvelsestype}</Text>
+                <Text style={styles.exerciseText}>
+                  Reps: {item.repetisjoner}, Serier: {item.serier}, Vekt: {item.vekt}kg
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => removeExercise(item.id)}>
+                <Text style={{ color: 'red', fontSize: 16 }}>X</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       />
@@ -143,7 +161,7 @@ const TrainingScreen = () => {
       />
 
       <TouchableOpacity style={styles.finishButton} onPress={finishSession}>
-        <Text style={styles.finishButtonText}>Finish</Text>
+        <Text style={styles.finishButtonText}>Lagre økt</Text>
       </TouchableOpacity>
     </View>
   );

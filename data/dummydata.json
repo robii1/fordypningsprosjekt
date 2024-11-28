@@ -44,6 +44,83 @@
       "serier": 3,
       "tretthet": 7,
       "kommentar": "God økt!"
+    },
+    {
+      "treningsregistreringID": 4,
+      "utøverID": 1,
+      "dato": "2024-10-22",
+      "øvelsestype": "Benkpress",
+      "vekt": 80,
+      "repetisjoner": 12,
+      "serier": 4,
+      "tretthet": 5,
+      "kommentar": "Sterk i bryst!"
+    },
+    {
+      "treningsregistreringID": 5,
+      "utøverID": 1,
+      "dato": "2024-10-20",
+      "øvelsestype": "Markløft",
+      "vekt": 125,
+      "repetisjoner": 6,
+      "serier": 3,
+      "tretthet": 8,
+      "kommentar": "Tung dag."
+    },
+    {
+      "treningsregistreringID": 6,
+      "utøverID": 1,
+      "dato": "2024-10-18",
+      "øvelsestype": "Knebøy",
+      "vekt": 95,
+      "repetisjoner": 12,
+      "serier": 4,
+      "tretthet": 4,
+      "kommentar": "God teknikk!"
+    },
+    {
+      "treningsregistreringID": 7,
+      "utøverID": 1,
+      "dato": "2024-10-15",
+      "øvelsestype": "Benkpress",
+      "vekt": 85,
+      "repetisjoner": 10,
+      "serier": 3,
+      "tretthet": 6,
+      "kommentar": "Bra flyt."
+    },
+    {
+      "treningsregistreringID": 8,
+      "utøverID": 1,
+      "dato": "2024-10-12",
+      "øvelsestype": "Markløft",
+      "vekt": 130,
+      "repetisjoner": 5,
+      "serier": 3,
+      "tretthet": 9,
+      "kommentar": "Sliten, men fornøyd."
+    },
+    {
+      "treningsregistreringID": 9,
+      "utøverID": 1,
+      "dato": "2024-10-10",
+      "øvelsestype": "Knebøy",
+      "vekt": 90,
+      "repetisjoner": 12,
+      "serier": 4,
+      "tretthet": 5,
+      "kommentar": "Lett dag."
+    },
+    {
+      "treningsregistreringID": 10,
+      "utøverID": 1,
+      "dato": "2024-10-08",
+      "øvelsestype": "Benkpress",
+      "vekt": 75,
+      "repetisjoner": 15,
+      "serier": 3,
+      "tretthet": 4,
+      "kommentar": "Veldig lett."
     }
   ],
   "exercises": [
@@ -55,6 +132,11 @@
     {
       "øvelseID": 2,
       "navn": "Markløft",
+      "type": "Styrke"
+    },
+    {
+      "øvelseID": 3,
+      "navn": "Benkpress",
       "type": "Styrke"
     }
   ]

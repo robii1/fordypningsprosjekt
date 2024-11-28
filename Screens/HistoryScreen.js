@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, FlatList } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import styles from '../styles/styles';
 
-const HistoryScreen = ({ navigation }) => {
+const HistoryScreen = () => {
   const [historyData, setHistoryData] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [filteredSessions, setFilteredSessions] = useState([]);
 
   useEffect(() => {
     // Hent data fra sessions i dummydata.json
@@ -14,51 +16,68 @@ const HistoryScreen = ({ navigation }) => {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
+  useEffect(() => {
+    if (selectedDate) {
+      // Filtrer økter for den valgte datoen
+      const filtered = historyData.filter((item) => item.dato === selectedDate);
+      setFilteredSessions(filtered);
+    }
+  }, [selectedDate, historyData]);
+
   // Markerte datoer for kalender basert på sessions
   const markedDates = historyData.reduce((acc, item) => {
-    acc[item.dato] = { selected: true, marked: true, selectedColor: '#00c8ff' };
+    acc[item.dato] = { selected: item.dato === selectedDate, marked: true, selectedColor: '#00c8ff' };
     return acc;
   }, {});
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('DetaljSide', { details: item })}>
-      <View style={styles.historyItem}>
-        <Text style={styles.dateText}>{item.dato}</Text>
-        <Text style={styles.detailsText}>
-          {item.øvelsestype} - Varighet: {item.varighet} min - Tretthet: {item.tretthet}
-        </Text>
-        <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderSessionDetails = () => {
+    if (filteredSessions.length === 0) {
+      return <Text>Ingen økter for denne datoen.</Text>;
+    }
+
+    return (
+      <FlatList
+        data={filteredSessions}
+        keyExtractor={(item) => item.treningsregistreringID.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.historyItem}>
+            <Text style={styles.dateText}>{item.dato}</Text>
+            <Text style={styles.detailsText}>Øvelse: {item.øvelsestype}</Text>
+            <Text style={styles.detailsText}>
+              Vekt: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
+            </Text>
+            <Text style={styles.detailsText}>Tretthet: {item.tretthet}</Text>
+            <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
+          </View>
+        )}
+      />
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Treningshistorikk</Text>
-      
+
       <Calendar
         style={styles.calendar}
         theme={{
           calendarBackground: '#323333',
           dayTextColor: '#fff',
           todayTextColor: '#ffd700',
-          selectedDayBackgroundColor: '#333',
+          selectedDayBackgroundColor: '#00c8ff',
           monthTextColor: '#00c8ff',
-          arrowColor: '#ffffff',
+          arrowColor: '#fff',
         }}
         markedDates={markedDates}
+        onDayPress={(day) => setSelectedDate(day.dateString)}
       />
 
-      {historyData.length === 0 ? (
-        <Text style={styles.noDataText}>Ingen treningsøkter registrert ennå.</Text>
-      ) : (
-        <FlatList
-          data={historyData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.treningsregistreringID.toString()}
-          contentContainerStyle={styles.listContainer}
-        />
+      {selectedDate && (
+        <Text style={styles.selectedDateText}>
+          Økter for {selectedDate}:
+        </Text>
       )}
+      {renderSessionDetails()}
     </SafeAreaView>
   );
 };

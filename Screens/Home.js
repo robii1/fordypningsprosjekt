@@ -9,7 +9,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     // Hent dummydata fra API
-    fetch('http://10.0.2.2:3000/sessions') // Bruk riktig API URL
+    fetch('http://10.0.2.2:3000/sessions') // Bruk riktig 
       .then((response) => response.json())
       .then((data) => {
         const filteredData = data.filter(
@@ -21,26 +21,41 @@ const HomeScreen = () => {
   }, [selectedExercise]);
 
   const renderBarChart = () => {
-    const maxWeight = Math.max(...exerciseData.map((item) => item.vekt), 0);
-
+    // Beregn totalt volum (vekt * repetisjoner * serier) for hver økt
+    const volumeData = exerciseData.map((item) => ({
+      ...item,
+      totalVolume: item.vekt * item.repetisjoner * item.serier,
+    }));
+  
+    // Finn maks volum for skalering
+    const maxVolume = Math.max(...volumeData.map((item) => item.totalVolume), 0);
+  
+    if (maxVolume === 0) return <Text>Ingen data tilgjengelig</Text>;
+  
+    const chartHeight = 250; // Maks høyde på containeren
+  
     return (
       <View style={styles.chartContainer}>
-        {exerciseData.map((item, index) => (
+        {volumeData.map((item, index) => (
           <View key={index} style={styles.barContainer}>
             <View
               style={[
                 styles.bar,
                 {
-                  height: `${(item.vekt / maxWeight) * 100}%`,
+                  height: (item.totalVolume / maxVolume) * chartHeight, // Skaler høyden basert på totalt volum
                 },
               ]}
             />
             <Text style={styles.barLabel}>{item.dato}</Text>
+            <Text style={styles.barValue}>{item.totalVolume}kg</Text>
           </View>
         ))}
       </View>
     );
   };
+  
+  
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,19 +78,22 @@ const HomeScreen = () => {
       </View>
 
       {/* Enkel stolpediagram */}
-      {exerciseData.length > 0 ? renderBarChart() : <Text style={styles.noDataText}>Ingen data tilgjengelig</Text>}
+      {exerciseData.length > 0 ? renderBarChart() : <Text>Ingen data tilgjengelig</Text>}
 
       <FlatList
-        data={exerciseData}
-        keyExtractor={(item) => item.treningsregistreringID.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.historyItem}>
-            <Text style={styles.detailsText}>
-              {item.dato}: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
-            </Text>
-          </View>
-        )}
-      />
+  data={exerciseData}
+  keyExtractor={(item) => item.treningsregistreringID.toString()}
+  renderItem={({ item }) => (
+    <View style={styles.historyItem}>
+      <Text style={styles.detailsText}>
+        {item.dato}: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
+      </Text>
+      <Text style={styles.detailsText}>Tretthet: {item.tretthet}</Text>
+      <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
+    </View>
+  )}
+/>
+
     </SafeAreaView>
   );
 };
