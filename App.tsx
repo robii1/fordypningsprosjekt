@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Image, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './Screens/Home';
+import HomeScreen from './Screens/ProfileScreen';
 import HistoryScreen from './Screens/HistoryScreen';
 import TrainingScreen from './Screens/TrainingScreen';
 import SettingsScreen from './Screens/SettingsScreen';
