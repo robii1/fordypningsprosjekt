@@ -1,54 +1,46 @@
 const db = require('../db');
 
-// Hent alle treninger
+// Hent alle treningsøkter
 const getAllTrainings = (req, res) => {
-  const query = 'SELECT * FROM Treningsregistrering';
+  const query = 'SELECT * FROM Sessions';
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Feil ved henting av treninger:', err);
-      res.status(500).send('Feil ved henting av treninger');
+      console.error('Feil ved henting av treningsøkter:', err);
+      res.status(500).send('Feil ved henting av treningsøkter');
     } else {
       res.json(results);
     }
   });
 };
 
-// Legg til en ny trening
+// Legg til en ny treningsøkt
 const addTraining = (req, res) => {
-  const { utøverID, dato, varighet, øvelsestype, tretthet, kommentar } = req.body;
-  const query = 'INSERT INTO Treningsregistrering (utøverID, dato, varighet, øvelsestype, tretthet, kommentar) VALUES (?, ?, ?, ?, ?, ?)';
-  db.query(query, [utøverID, dato, varighet, øvelsestype, tretthet, kommentar], (err, results) => {
+  const { utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar } = req.body;
+  const query = `
+    INSERT INTO Sessions (utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.query(query, [utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar], (err, results) => {
     if (err) {
-      console.error('Feil ved lagring av trening:', err);
-      res.status(500).send('Feil ved lagring av trening');
+      console.error('Feil ved lagring av treningsøkt:', err);
+      res.status(500).send('Feil ved lagring av treningsøkt');
     } else {
-      res.send('Trening lagt til');
+      res.send('Treningsøkt lagt til');
     }
   });
 };
-const getTreningBruker = (req, res) => {
-  const { utøverID } = req.params;
-  const query = 'SELECT * FROM Treningsregistrering WHERE utøverID = ?';
-  db.query(query, [utøverID], (err, results) => {
-    if (err) {
-      console.error('Feil ved henting av treninger for bruker:', err);
-      res.status(500).send('Feil ved henting av treninger');
-    } else {
-      res.json(results);
-    }
-  });
-};
-const getTreningDato = (req, res) => {
-  const { dato } = req.params;
-  const query = 'SELECT * FROM Treningsregistrering WHERE dato = ?';
+
+// Hent treningsøkter basert på dato
+const getTrainingsByDate = (req, res) => {
+  const { dato } = req.params; // Dato sendes som en parameter i URL
+  const query = 'SELECT * FROM Sessions WHERE dato = ?';
   db.query(query, [dato], (err, results) => {
     if (err) {
-      console.error('Feil ved henting av treninger for dato:', err);
-      res.status(500).send('Feil ved henting av treninger');
+      console.error('Feil ved henting av treningsøkter for dato:', err);
+      res.status(500).send('Feil ved henting av treningsøkter for dato');
     } else {
       res.json(results);
     }
   });
 };
 
-module.exports = { getAllTrainings, addTraining, getTreningBruker, getTreningDato };
+module.exports = { getAllTrainings, addTraining, getTrainingsByDate };

@@ -4,7 +4,6 @@ const mysql = require('mysql2');
 // miljøvariabler
 dotenv.config();
 
-const result = dotenv.config();
 
 // Opprett tilkobling
 const db = mysql.createPool({
@@ -24,4 +23,3 @@ console.log('DB_PORT:', process.env.DB_PORT);
 console.log('DB_USER:', process.env.DB_USER);
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 console.log('DB_NAME:', process.env.DB_NAME);
-console.log(result.parsed); // Viser innholdet i .env
