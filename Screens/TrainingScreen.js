@@ -132,7 +132,7 @@ const TrainingScreen = () => {
         data={exercises}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.exerciseItem}>
+          <View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View>
                 <Text style={styles.exerciseText}>{item.øvelsestype}</Text>
