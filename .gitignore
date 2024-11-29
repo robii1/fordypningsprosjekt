@@ -72,3 +72,6 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Ignorer miljøvariabel-filer
+db.env
