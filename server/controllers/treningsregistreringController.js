@@ -26,5 +26,29 @@ const addTraining = (req, res) => {
     }
   });
 };
+const getTreningBruker = (req, res) => {
+  const { utøverID } = req.params;
+  const query = 'SELECT * FROM Treningsregistrering WHERE utøverID = ?';
+  db.query(query, [utøverID], (err, results) => {
+    if (err) {
+      console.error('Feil ved henting av treninger for bruker:', err);
+      res.status(500).send('Feil ved henting av treninger');
+    } else {
+      res.json(results);
+    }
+  });
+};
+const getTreningDato = (req, res) => {
+  const { dato } = req.params;
+  const query = 'SELECT * FROM Treningsregistrering WHERE dato = ?';
+  db.query(query, [dato], (err, results) => {
+    if (err) {
+      console.error('Feil ved henting av treninger for dato:', err);
+      res.status(500).send('Feil ved henting av treninger');
+    } else {
+      res.json(results);
+    }
+  });
+};
 
-module.exports = { getAllTrainings, addTraining };
+module.exports = { getAllTrainings, addTraining, getTreningBruker, getTreningDato };

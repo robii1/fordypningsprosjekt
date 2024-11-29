@@ -1,8 +1,8 @@
 const express = require('express');
-const { getAllExercises } = require('../controllers/øvelseController');
+const { getAllExercises, getØvelseTrening } = require('../controllers/øvelseController');
 const router = express.Router();
 
-// Hent alle øvelser
-router.get('/', getAllExercises);
+router.get('/', getAllExercises); // alle øvelser
+router.get('/treningsregistrering/:treningsregistreringID', getØvelseTrening); // øvelser for en treningsregistrering
 
 module.exports = router;

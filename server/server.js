@@ -29,5 +29,5 @@ db.getConnection((err, connection) => {
 
 // Start serveren
 app.listen(PORT, () => {
-  console.log(`Server kjører på http://localhost:${PORT}`);
+  console.log(`Server kjører på http://127.0.0.1:${PORT}`);
 });

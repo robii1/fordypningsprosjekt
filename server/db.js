@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-require('dotenv').config(); // Last inn miljøvariabler fra .env
+require('dotenv').config();
 
 // Opprett tilkobling
 const db = mysql.createPool({
@@ -13,3 +13,8 @@ const db = mysql.createPool({
 
 // Eksporter tilkobling
 module.exports = db;
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_PORT:', process.env.DB_PORT);
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('DB_NAME:', process.env.DB_NAME);
