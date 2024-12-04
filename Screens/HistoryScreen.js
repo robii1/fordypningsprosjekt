@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, SafeAreaView, FlatList } from 'react-native';
-import { Calendar } from 'react-native-calendars';
 import { useFocusEffect } from '@react-navigation/native';
 import styles from '../styles/styles';
+import TreningKalender from '../Components/treningsKalender';
+import ØktListe from '../Components/øktListe';
 
 const HistoryScreen = () => {
   const [historyData, setHistoryData] = useState([]);
@@ -25,62 +26,20 @@ const HistoryScreen = () => {
       if (selectedDate) {
         const filtered = historyData.filter((item) => item.dato === selectedDate);
         setFilteredSessions(filtered);
-      }
-    }, [selectedDate, historyData])
-  );
+      }}, [selectedDate, historyData]));
 
-  // Markerte datoer for kalender basert på sessions
+  // datoer for kalender basert på økter
   const markedDates = historyData.reduce((acc, item) => {
     acc[item.dato] = { selected: item.dato === selectedDate, marked: true, selectedColor: '#00c8ff' };
-    return acc;
-  }, {});
+    return acc}, {});
 
-  const renderSessionDetails = () => {
-    if (filteredSessions.length === 0) {
-      return <Text style={styles.noDataText}>Ingen økter for denne datoen.</Text>;
-    }
-
-    return (
-      <FlatList
-        data={filteredSessions}
-        keyExtractor={(item) => item.treningsregistreringID.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.historyItem}>
-            <Text style={styles.detailsText}>{item.dato}</Text>
-            <Text style={styles.detailsText}>Øvelse: {item.øvelsestype}</Text>
-            <Text style={styles.detailsText}>
-              Vekt: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
-            </Text>
-            <Text style={styles.detailsText}>Tretthet: {item.tretthet}</Text>
-            <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
-          </View>
-        )}
-      />
-    );
-  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Treningshistorikk</Text>
-
-      <Calendar
-        style={styles.calendar}
-        theme={{
-          calendarBackground: '#323333',
-          dayTextColor: '#fff',
-          todayTextColor: '#ffd700',
-          selectedDayBackgroundColor: '#00c8ff',
-          monthTextColor: '#00c8ff',
-          arrowColor: '#fff',
-        }}
-        markedDates={markedDates}
-        onDayPress={(day) => setSelectedDate(day.dateString)}
-      />
-
-      {selectedDate && (
-        <Text style={styles.selectedDateText}>Økter for {selectedDate}:</Text>
-      )}
-      {renderSessionDetails()}
+      <TreningKalender markedDates={markedDates} onDayPress={(day) => setSelectedDate(day.dateString)} />
+      {selectedDate && <Text style={styles.selectedDateText}>Økter for {selectedDate}:</Text>}
+      <ØktListe sessions={filteredSessions} />
     </SafeAreaView>
   );
 };

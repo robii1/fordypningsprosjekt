@@ -8,8 +8,7 @@ const getAllTrainings = (req, res) => {
       console.error('Feil ved henting av treningsøkter:', err);
       res.status(500).send('Feil ved henting av treningsøkter');
     } else {
-      res.json(results);
-    }
+      res.json(results)}
   });
 };
 
@@ -24,8 +23,7 @@ const addTraining = (req, res) => {
       console.error('Feil ved lagring av treningsøkt:', err);
       res.status(500).send('Feil ved lagring av treningsøkt');
     } else {
-      res.send('Treningsøkt lagt til');
-    }
+      res.send('Treningsøkt lagt til')}
   });
 };
 
@@ -38,8 +36,7 @@ const getTrainingsByDate = (req, res) => {
       console.error('Feil ved henting av treningsøkter for dato:', err);
       res.status(500).send('Feil ved henting av treningsøkter for dato');
     } else {
-      res.json(results);
-    }
+      res.json(results)}
   });
 };
 

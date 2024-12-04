@@ -17,7 +17,7 @@ app.use('/sessions', treningsregistreringRoutes);
 // for å teste at jeg får kolbet til
 db.getConnection((err, connection) => {
     if (err) {
-      console.error('Kan ikke koble til databasen:', err);
+      console.error('database feilkobling:', err);
     } else {
       console.log('Koblet til databasen!');
       connection.release();

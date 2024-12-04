@@ -1,0 +1,29 @@
+import React from 'react';
+import { FlatList, View, Text } from 'react-native';
+import styles from '../styles/styles';
+
+const ØktListe = ({ sessions }) => {
+  if (sessions.length === 0) {
+    return <Text style={styles.label}>Ingen økter for denne datoen</Text>;
+  }
+
+  return (
+    <FlatList
+      data={sessions}
+      keyExtractor={(item) => item.treningsregistreringID.toString()}
+      renderItem={({ item }) => (
+        <View style={styles.historyItem}>
+          <Text style={styles.detailsText}>{item.dato}</Text>
+          <Text style={styles.detailsText}>Øvelse: {item.øvelsestype}</Text>
+          <Text style={styles.detailsText}>
+            Vekt: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
+          </Text>
+          <Text style={styles.detailsText}>Tretthet: {item.tretthet}</Text>
+          <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
+        </View>
+      )}
+    />
+  );
+};
+
+export default ØktListe;

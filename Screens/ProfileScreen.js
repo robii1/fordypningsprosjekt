@@ -2,6 +2,9 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import styles from '../styles/styles';
+import øvelsesKnapper from '../Components/øvelsesKnapper';
+import BarChart from '../Components/barChart';
+import TreningsListe from '../Components/treningsListe';
 
 const HomeScreen = () => {
   const [selectedExercise, setSelectedExercise] = useState('Knebøy');
@@ -23,76 +26,21 @@ const HomeScreen = () => {
     }, [selectedExercise]) // Oppdater data når valgt øvelse endres
   );
 
-  const renderBarChart = () => {
-    // Beregn totalt volum (vekt * repetisjoner * serier) for hver økt
-    const volumeData = exerciseData.map((item) => ({
-      ...item,
-      totalVolume: item.vekt * item.repetisjoner * item.serier,
-    }));
-
-    // Finn maks volum for skalering
-    const maxVolume = Math.max(...volumeData.map((item) => item.totalVolume), 0);
-
-    if (maxVolume === 0) return <Text>Ingen data tilgjengelig</Text>;
-
-    const chartHeight = 250; // Maks høyde på containeren
-
-    return (
-      <View style={styles.chartContainer}>
-        {volumeData.map((item, index) => (
-          <View key={index} style={styles.barContainer}>
-            <View
-              style={[
-                styles.bar,
-                {
-                  height: (item.totalVolume / maxVolume) * chartHeight, // Skaler høyden basert på totalt volum
-                },
-              ]}
-            />
-            <Text style={styles.barLabel}>{item.dato}</Text>
-            <Text style={styles.barValue}>{item.totalVolume}kg</Text>
-          </View>
-        ))}
-      </View>
-    );
-  };
-
+  const renderBarChart = () => 
+  <BarChart
+  volumeData={exerciseData.map((item) => ({
+    ...item,
+    totalVolume: item.vekt * item.repetisjoner * item.serier,
+  }))}
+/>
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Velg en øvelse</Text>
+      <øvelsesKnapper exercises={exercises} selectedExercise={selectedExercise} onSelect={setSelectedExercise}/>
 
-      {/* Øvelsesknapper */}
-      <View style={styles.buttonContainer}>
-        {exercises.map((exercise) => (
-          <TouchableOpacity
-            key={exercise}
-            style={[
-              styles.exerciseButton,
-              selectedExercise === exercise && styles.selectedButton,
-            ]}
-            onPress={() => setSelectedExercise(exercise)}
-          >
-            <Text style={styles.exerciseButtonText}>{exercise}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {/* Enkel stolpediagram */}
       {exerciseData.length > 0 ? renderBarChart() : <Text>Ingen data tilgjengelig</Text>}
 
-      <FlatList
-        data={exerciseData}
-        keyExtractor={(item) => item.treningsregistreringID.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.historyItem}>
-            <Text style={styles.detailsText}>
-              {item.dato}: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
-            </Text>
-            <Text style={styles.detailsText}>Tretthet: {item.tretthet}</Text>
-            <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
-          </View>
-        )}
-      />
+      <TreningsListe data={exerciseData} />
     </SafeAreaView>
   );
 };

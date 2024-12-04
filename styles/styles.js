@@ -18,19 +18,20 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: '#ffd700',
+    color: '#ffff',
     textAlign: 'center',
     marginBottom: 10,
   },
   exerciseText: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#fff', // Hvit 
   },
   label: {
-    color: '#00c8ff', // Blå
+    color: '#ffff', // Blå
     fontSize: 14,
     marginTop: 20, //
     textAlign: 'center',
+    textDecorationLine: 'underline',
   },
     input: {
       backgroundColor: '#333', //  grå bakgrunn
@@ -40,18 +41,19 @@ const styles = StyleSheet.create({
       marginBottom: 15, 
       fontSize: 16, // Større tekst
     },
-    finishButton: {
-      backgroundColor: '#00c8ff', // blå
+    loginBTN: {
+      backgroundColor: '#4c0966', // lilla
+      borderRadius: 20,
       paddingVertical: 12, 
       paddingHorizontal: 25, 
       alignItems: 'center',
-      marginTop: 20, // Avstand over knappen
+      marginTop: 20, //  over knappen
     },
-    finishButtonText: {
-      color: '#1e1e1e', 
+    loginBtnText: {
+      color: '#ffffff', 
       fontSize: 16,
-      fontWeight: 'bold',
     },
+    
   // Øvelsesknapper
   buttonContainer: {
     flexDirection: 'row',
@@ -60,16 +62,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   exerciseButton: {
-    backgroundColor: '#333',
+    backgroundColor: '#4c0966',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     marginHorizontal: 5,
   },
-  selectedButton: {
-    backgroundColor: '#00c8ff',
+  aktivknapp: {
+    backgroundColor: 'purple'
   },
   exerciseButtonText: {
-    color: '#fff',
+    color: '#ffff',
     fontSize: 16,
   },
 

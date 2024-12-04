@@ -28,31 +28,27 @@ export default function App() {
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ color }) => {
-              let iconSource;
+              let ikon;
 
               if (route.name === 'History') {
-                iconSource = historyIcon;
-              } else if (route.name === 'Home') {
-                iconSource = homeIcon;
-              } else if (route.name === 'Training') {
-                iconSource = playIcon;
-              } else if (route.name === 'Settings') {
-                iconSource = settingsIcon;
-              }
+                ikon = historyIcon;} else if (route.name === 'Home') {
+                ikon = homeIcon; } else if (route.name === 'Training') {
+                ikon = playIcon; } else if (route.name === 'Settings') {
+                ikon = settingsIcon;}
 
               return (
-                <Image source={iconSource} style={{ marginTop: 15, width: 40, height:40, tintColor: color }} />
+                <Image source={ikon} style={{ marginTop: 15, width: 40, height:40, tintColor: color }} />
               );
             },
             tabBarShowLabel: false,
-            tabBarActiveTintColor: '#00c8ff', // Farge for aktiv tab
-            tabBarInactiveTintColor: '#fff', // Farge for inaktive tabs
+            tabBarActiveTintColor: '#fff', // Farge for aktiv tab
+            tabBarInactiveTintColor: '#858585', // Farge for inaktive tabs
             tabBarStyle: { backgroundColor: '#1e1e1e', height: 60  }, 
           })}
         >
-          <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Hjem' }} />
-          <Tab.Screen name="History" component={HistoryScreen} options={{ title: 'Historikk' }} />
-          <Tab.Screen name="Training" component={TrainingScreen} options={{ title: 'Trening' }} />
+          <Tab.Screen name="Home" component={HomeScreen} />
+          <Tab.Screen name="History" component={HistoryScreen} />
+          <Tab.Screen name="Training" component={TrainingScreen} />
           <Tab.Screen
             name="Settings"
             children={() => <SettingsScreen setIsLoggedIn={setIsLoggedIn} />}

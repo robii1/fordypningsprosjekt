@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/styles';
+import TretthetPicker from '../Components/tretthetPicker';
+import ØvelseListe from '../Components/øvelseListe'
+import ØvelsePicker from '../Components/øvelsePicker'
 
 const TrainingScreen = () => {
   const [øvelsestype, setØvelsestype] = useState('');
@@ -89,86 +91,53 @@ const TrainingScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Trening</Text>
-
-      {/* Picker for å velge øvelsestype */}
-      <Picker
-        selectedValue={øvelsestype}
-        style={styles.picker}
-        onValueChange={(itemValue) => setØvelsestype(itemValue)}
-      >
-        <Picker.Item label="Velg øvelse" value="" />
-        {availableExercises.map((exercise) => (
-          <Picker.Item key={exercise.øvelseID} label={exercise.navn} value={exercise.navn} />
-        ))}
-      </Picker>
+      <ØvelsePicker
+      availableExercises={availableExercises}
+      onSelect={(selected) => setØvelsestype(selected)}
+      ></ØvelsePicker>
 
       <TextInput
         style={styles.input}
-        placeholder="Repetisjoner"
         placeholderTextColor="#999"
+        placeholder="Repetisjoner"
         keyboardType="numeric"
         value={repetisjoner}
         onChangeText={setRepetisjoner}
       />
       <TextInput
         style={styles.input}
-        placeholder="Serier"
         placeholderTextColor="#999"
+        placeholder="Serier"
         keyboardType="numeric"
         value={serier}
         onChangeText={setSerier}
       />
       <TextInput
         style={styles.input}
-        placeholder="Vekt (kg)"
         placeholderTextColor="#999"
+        placeholder="Vekt (kg)"
         keyboardType="numeric"
         value={vekt}
         onChangeText={setVekt}
       />
-      <Button title="Legg til øvelse" onPress={addExercise} />
+        <TouchableOpacity onPress={addExercise}>
+        <Text style = {styles.loginBtnText}>+   Legg til</Text>
+        </TouchableOpacity>
 
-      <FlatList
-        data={exercises}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <View>
-                <Text style={styles.exerciseText}>{item.øvelsestype}</Text>
-                <Text style={styles.exerciseText}>
-                  Reps: {item.repetisjoner}, Serier: {item.serier}, Vekt: {item.vekt}kg
-                </Text>
-              </View>
-              <TouchableOpacity onPress={() => removeExercise(item.id)}>
-                <Text style={{ color: 'red', fontSize: 16 }}>X</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      />
 
+      <ØvelseListe  exercises={exercises} onRemove={removeExercise}/>
+      
+      
       <Text style={styles.label}>Tretthet (1-10)</Text>
-      <Picker
-        selectedValue={tretthet}
-        style={styles.picker}
-        onValueChange={(itemValue) => setTretthet(itemValue)}
-      >
-        {[...Array(10).keys()].map((i) => (
-          <Picker.Item key={i + 1} label={(i + 1).toString()} value={(i + 1).toString()} />
-        ))}
-      </Picker>
-
+      <TretthetPicker selectedValue={tretthet} onChange={(value) => setTretthet(value)} />
       <TextInput
         style={styles.input}
         placeholder="Kommentar"
         placeholderTextColor="#999"
         value={kommentar}
-        onChangeText={setKommentar}
-      />
-
-      <TouchableOpacity style={styles.finishButton} onPress={finishSession}>
-        <Text style={styles.finishButtonText}>Lagre økt</Text>
+        onChangeText={setKommentar}/>
+      <TouchableOpacity style={styles.exerciseButton} onPress={finishSession}>
+        <Text style={styles.exerciseButtonText}>Lagre økt</Text>
       </TouchableOpacity>
     </View>
   );
