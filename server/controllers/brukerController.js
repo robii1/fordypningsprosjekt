@@ -12,4 +12,19 @@ const getAllUsers = (req, res) => {
       }
     });
   };
-module.exports = { getAllUsers };
+
+  // Legg til ny bruker
+const addUser = (req, res) => {
+  const { username, password } = req.body;
+
+  const query = 'INSERT INTO Users (username, password) VALUES (?, ?)';
+  db.query(query, [username, password], (err, results) => {
+    if (err) {
+      console.error('Feil ved oppretting av bruker:', err);
+      res.status(500).send('Feil ved oppretting av bruker');
+    } else {
+      res.send('Bruker opprettet');
+    }
+  });
+};
+module.exports = { getAllUsers, addUser };

@@ -17,14 +17,12 @@ const settingsIcon = require('./Pictures/settings.png');
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // sett true for å skippe, denne styrer tilstand av innlogget
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // sett true for å skippe, denne styrer tilstand av innlogget
 
   return (
     <NavigationContainer>
-      {/* Vis kun LoginScreen hvis brukeren ikke er logget inn */}
       {!isLoggedIn ? (
-        <LoginScreen setIsLoggedIn={setIsLoggedIn} />
-      ) : (
+        <LoginScreen setIsLoggedIn={setIsLoggedIn} />) : (
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ color }) => {

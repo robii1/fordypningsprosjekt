@@ -15,7 +15,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ setIsLoggedIn }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Innstillinger</Text>
-      {/* Legg til en knapp for å logge ut */}
       <TouchableOpacity style = {styles.loginBTN} onPress={handleLogout}>
         <Text style = {styles.loginBtnText}>Logg ut</Text>
       </TouchableOpacity>

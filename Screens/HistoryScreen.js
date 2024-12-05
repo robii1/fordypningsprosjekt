@@ -44,10 +44,9 @@ const HistoryScreen = () => {
   }, [selectedDate]);
 
   const markedDates = historyData.reduce((acc, item) => {
-    // Konverter datoen til riktig format hvis nødvendig
-    
-    // Logg for å bekrefte riktig format
-    console.log(`Dato i historyData: ${item.dato}, Konvertert: ${date}`);
+
+const date = item.dato
+
   
     acc[date] = {
       selected: date === selectedDate,

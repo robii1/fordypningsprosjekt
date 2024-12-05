@@ -57,5 +57,14 @@ export const postTraining = async (newTraining) => {
     throw error}
 };
 
-
+// Legg til ny bruker
+export const addUser = async (user) => {
+  try {
+    const response = await api.post('/users', user);
+    return response.data;
+  } catch (error) {
+    console.error('Feil ved oppretting av bruker:', error);
+    throw error;
+  }
+};
 export default api;

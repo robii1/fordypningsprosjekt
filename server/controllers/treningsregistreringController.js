@@ -1,7 +1,7 @@
 const db = require('../db');
 
 // Hent alle treningsøkter
-const getAllTrainings = (res) => {
+const getAllTrainings = (req, res) => {
   const query = 'SELECT * FROM Sessions';
   db.query(query, (err, results) => {
     
@@ -16,8 +16,7 @@ const getAllTrainings = (res) => {
 // Legg til en ny treningsøkt
 const addTraining = (req, res) => {
   const { utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar } = req.body;
-  const query = `
-  INSERT INTO Sessions (utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar)
+  const query = ` INSERT INTO Sessions (utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar)
   VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
   db.query(query, [utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar], (err, results) => {
     if (err) {

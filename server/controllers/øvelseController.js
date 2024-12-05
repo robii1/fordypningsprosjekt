@@ -1,7 +1,7 @@
 const db = require('../db');
 
 // Hent alle øvelser
-const getAllExercises = (res) => {
+const getAllExercises = (req, res) => {
   const query = 'SELECT * FROM Exercises';
   db.query(query, (err, results) => {
     if (err) {
