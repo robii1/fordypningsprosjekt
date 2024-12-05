@@ -1,9 +1,10 @@
 const db = require('../db');
 
 // Hent alle treningsøkter
-const getAllTrainings = (req, res) => {
+const getAllTrainings = (res) => {
   const query = 'SELECT * FROM Sessions';
   db.query(query, (err, results) => {
+    
     if (err) {
       console.error('Feil ved henting av treningsøkter:', err);
       res.status(500).send('Feil ved henting av treningsøkter');
@@ -16,11 +17,11 @@ const getAllTrainings = (req, res) => {
 const addTraining = (req, res) => {
   const { utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar } = req.body;
   const query = `
-    INSERT INTO Sessions (utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+  INSERT INTO Sessions (utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
   db.query(query, [utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar], (err, results) => {
     if (err) {
-      console.error('Feil ved lagring av treningsøkt:', err);
+      console.error('Feil ved lagring av treningsøkt:', err.message);
       res.status(500).send('Feil ved lagring av treningsøkt');
     } else {
       res.send('Treningsøkt lagt til')}
@@ -29,7 +30,7 @@ const addTraining = (req, res) => {
 
 // Hent treningsøkter basert på dato
 const getTrainingsByDate = (req, res) => {
-  const { dato } = req.params; // Dato sendes som en parameter i URL
+  const { dato } = req.params; 
   const query = 'SELECT * FROM Sessions WHERE dato = ?';
   db.query(query, [dato], (err, results) => {
     if (err) {

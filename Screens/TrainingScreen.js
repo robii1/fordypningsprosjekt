@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/styles';
 import TretthetPicker from '../Components/tretthetPicker';
-import ØvelseListe from '../Components/øvelseListe'
-import ØvelsePicker from '../Components/øvelsePicker'
+import ØvelseListe from '../Components/øvelseListe';
+import ØvelsePicker from '../Components/øvelsePicker';
+import { getAllExercises, postTraining } from '../api';
 
 const TrainingScreen = () => {
   const [øvelsestype, setØvelsestype] = useState('');
@@ -15,12 +16,18 @@ const TrainingScreen = () => {
   const [exercises, setExercises] = useState([]);
   const [availableExercises, setAvailableExercises] = useState([]);
 
-  // Hent øvelser fra dummydata.json
+ 
   useEffect(() => {
-    fetch('http://10.0.2.2:3000/exercises')
-      .then((response) => response.json())
-      .then((data) => setAvailableExercises(data))
-      .catch((error) => console.error('Error fetching exercises:', error));
+    const fetchExercises = async () => {
+      try {
+        const data = await getAllExercises();
+        setAvailableExercises(data);
+      } catch (error) {
+        console.error('Feil ved henting av øvelser:', error);
+      }
+    };
+    fetchExercises();
+    
   }, []);
 
   const addExercise = () => {
@@ -51,12 +58,10 @@ const TrainingScreen = () => {
       Alert.alert('Feil', 'Legg til en øvelse før du lagrer.');
       return;
     }
-  
-    // Opprett treningsdata med detaljer for hver øvelse
+
     const newTraining = exercises.map((exercise) => ({
-      treningsregistreringID: Date.now() + Math.random(), // Unik ID basert på tid
       utøverID: 1,
-      dato: new Date().toISOString().split('T')[0],
+      dato: new Date(),
       øvelsestype: exercise.øvelsestype,
       vekt: parseInt(exercise.vekt, 10),
       repetisjoner: parseInt(exercise.repetisjoner, 10),
@@ -64,41 +69,32 @@ const TrainingScreen = () => {
       tretthet: parseInt(tretthet, 10),
       kommentar,
     }));
-  
+    
+
     try {
-      // Post hver øvelse separat
       for (const training of newTraining) {
-        await fetch('http://10.0.2.2:3000/sessions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(training),
-        });
+        await postTraining(training);
       }
-  
       Alert.alert('Bra jobbet', 'Treningsøkten ble lagret!');
-      setExercises([]); // Tøm øvelser etter lagring
+      setExercises([]);
       setTretthet('1');
       setKommentar('');
     } catch (error) {
-      Alert.alert('Feil', 'Kunne ikke lagre treningsøkten.');
-      console.error('Error posting session:', error);
+      console.error('Feil ved lagring av treningsøkt:', error);
     }
   };
-  
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Trening</Text>
+      
       <ØvelsePicker
-      availableExercises={availableExercises}
-      onSelect={(selected) => setØvelsestype(selected)}
-      ></ØvelsePicker>
+        availableExercises={availableExercises}
+        onSelect={(selected) => setØvelsestype(selected)}
+      />
 
       <TextInput
         style={styles.input}
-        placeholderTextColor="#999"
         placeholder="Repetisjoner"
         keyboardType="numeric"
         value={repetisjoner}
@@ -106,7 +102,6 @@ const TrainingScreen = () => {
       />
       <TextInput
         style={styles.input}
-        placeholderTextColor="#999"
         placeholder="Serier"
         keyboardType="numeric"
         value={serier}
@@ -114,28 +109,25 @@ const TrainingScreen = () => {
       />
       <TextInput
         style={styles.input}
-        placeholderTextColor="#999"
         placeholder="Vekt (kg)"
         keyboardType="numeric"
         value={vekt}
         onChangeText={setVekt}
       />
-        <TouchableOpacity onPress={addExercise}>
-        <Text style = {styles.loginBtnText}>+   Legg til</Text>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={addExercise}>
+        <Text style={styles.loginBtnText}>+ Legg til</Text>
+      </TouchableOpacity>
 
+      <ØvelseListe exercises={exercises} onRemove={removeExercise} />
 
-      <ØvelseListe  exercises={exercises} onRemove={removeExercise}/>
-      
-      
       <Text style={styles.label}>Tretthet (1-10)</Text>
       <TretthetPicker selectedValue={tretthet} onChange={(value) => setTretthet(value)} />
       <TextInput
         style={styles.input}
         placeholder="Kommentar"
-        placeholderTextColor="#999"
         value={kommentar}
-        onChangeText={setKommentar}/>
+        onChangeText={setKommentar}
+      />
       <TouchableOpacity style={styles.exerciseButton} onPress={finishSession}>
         <Text style={styles.exerciseButtonText}>Lagre økt</Text>
       </TouchableOpacity>

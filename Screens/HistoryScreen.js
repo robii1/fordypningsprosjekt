@@ -1,44 +1,73 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, SafeAreaView, FlatList } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, SafeAreaView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import styles from '../styles/styles';
 import TreningKalender from '../Components/treningsKalender';
 import ØktListe from '../Components/øktListe';
+import { getAllTrainings, getTrainingsByDate } from '../api'; 
 
 const HistoryScreen = () => {
-  const [historyData, setHistoryData] = useState([]);
+  const [historyData, setHistoryData] = useState([]); // Hentede data
   const [selectedDate, setSelectedDate] = useState(null);
-  const [filteredSessions, setFilteredSessions] = useState([]);
+  const [filteredSessions, setFilteredSessions] = useState([]); // Data filtrert for valgt dato
 
-  // Hent data når skjermen får fokus
+  // Hent all treningshistorikk når skjermen får fokus
   useFocusEffect(
     useCallback(() => {
-      fetch('http://10.0.2.2:3000/sessions')
-        .then((response) => response.json())
-        .then((data) => setHistoryData(data))
-        .catch((error) => console.error('Error fetching data:', error));
+      const fetchHistoryData = async () => {
+        try {
+          const data = await getAllTrainings();
+          setHistoryData(data);
+        } catch (error) {
+          console.error('Feil ved henting av all treningshistorikk:', error);
+        }
+      };
+      fetchHistoryData();
     }, [])
   );
 
   // Oppdater filtrerte økter når en dato er valgt
-  useFocusEffect(
-    useCallback(() => {
-      if (selectedDate) {
-        const filtered = historyData.filter((item) => item.dato === selectedDate);
-        setFilteredSessions(filtered);
-      }}, [selectedDate, historyData]));
+  useEffect(() => {
+    if (selectedDate) {
+      const fetchFilteredData = async () => {
+        try {
+          const data = await getTrainingsByDate(selectedDate);
+          setFilteredSessions(data);
+        } catch (error) {
+          console.error('Feil ved henting av treningsøkter:', error);
+        }
+      };
+      fetchFilteredData();
+    } else {
+      setFilteredSessions([]);
+    }
+  }, [selectedDate]);
 
-  // datoer for kalender basert på økter
   const markedDates = historyData.reduce((acc, item) => {
-    acc[item.dato] = { selected: item.dato === selectedDate, marked: true, selectedColor: '#00c8ff' };
-    return acc}, {});
-
+    // Konverter datoen til riktig format hvis nødvendig
+    
+    // Logg for å bekrefte riktig format
+    console.log(`Dato i historyData: ${item.dato}, Konvertert: ${date}`);
+  
+    acc[date] = {
+      selected: date === selectedDate,
+      marked: true,
+      selectedColor: '#00c8ff',
+      dotColor: '#00c8ff',
+    };
+    return acc;
+  }, {});
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Treningshistorikk</Text>
-      <TreningKalender markedDates={markedDates} onDayPress={(day) => setSelectedDate(day.dateString)} />
-      {selectedDate && <Text style={styles.selectedDateText}>Økter for {selectedDate}:</Text>}
+      <TreningKalender
+        markedDates={markedDates}
+        onDayPress={(day) => setSelectedDate(day.dateString)}
+      />
+      {selectedDate && (
+        <Text style={styles.selectedDateText}>Økter for {selectedDate}:</Text>
+      )}
       <ØktListe sessions={filteredSessions} />
     </SafeAreaView>
   );

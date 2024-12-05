@@ -6,19 +6,14 @@ const BarChart = ({ volumeData }) => {
   const maxVolume = Math.max(...volumeData.map((item) => item.totalVolume), 0);
   if (maxVolume === 0) return <Text>Ingen data tilgjengelig</Text>;
 
-  const chartHeight = 250; // Maks høyde på containeren
+  const chartHeight = 240; // Maks høyde på containeren
 
   return (
     <View style={styles.chartContainer}>
       {volumeData.map((item, index) => (
         <View key={index} style={styles.barContainer}>
-          <View
-            style={[
-              styles.bar,
-              { height: (item.totalVolume / maxVolume) * chartHeight },
-            ]}
-          />
-          <Text style={styles.barLabel}>{item.dato}</Text>
+          <View style={[ styles.bar,{ height: (item.totalVolume / maxVolume) * chartHeight }]}/>
+          <Text style={styles.barLabel}>{item.dato.split('T')[0]}</Text>
           <Text style={styles.barValue}>{item.totalVolume}kg</Text>
         </View>
       ))}

@@ -10,7 +10,7 @@ const TreningsListe = ({ data }) => {
       renderItem={({ item }) => (
         <View style={styles.historyItem}>
           <Text style={styles.detailsText}>
-            {item.dato}: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
+          {item.dato.split('T')[0]}: {item.vekt}kg, {item.repetisjoner} reps, {item.serier} serier
           </Text>
           <Text style={styles.detailsText}>Tretthet: {item.tretthet}</Text>
           <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>

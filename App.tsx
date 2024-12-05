@@ -17,7 +17,7 @@ const settingsIcon = require('./Pictures/settings.png');
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Styrer innloggingstilstanden
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // sett true for å skippe, denne styrer tilstand av innlogget
 
   return (
     <NavigationContainer>

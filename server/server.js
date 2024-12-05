@@ -2,6 +2,7 @@ const db = require('./db');
 const express = require('express');
 const bodyParser = require('body-parser');
 const øvelseRoutes = require('./routes/øvelse');
+const brukerRoutes = require('./routes/users')
 const treningsregistreringRoutes = require('./routes/treningsregistrering');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 // Ruter
 app.use('/exercises', øvelseRoutes);
 app.use('/sessions', treningsregistreringRoutes);
+app.use('/users', brukerRoutes);
 
 // for å teste at jeg får kolbet til
 db.getConnection((err, connection) => {
