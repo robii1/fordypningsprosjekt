@@ -8,7 +8,7 @@ interface SettingsScreenProps {
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ setIsLoggedIn }) => {
   const handleLogout = () => {
-    // Når brukeren logger ut
+    // settes til false og logger dermed ut
     setIsLoggedIn(false);
   };
 

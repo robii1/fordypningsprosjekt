@@ -16,10 +16,10 @@ const handleLogin = async () => {
     const user = users.find((u) => u.username === brukernavn);
 
     if (!user) {
-      Alert.alert('Feil', 'Bruker finnes ikke. Prøv å registrere deg.');
-    } else if (user.password !== passord) {
-      Alert.alert('Feil', 'Feil passord.');
-    } else {
+      Alert.alert('Feil', 'Bruker finnes ikke. Prøv å registrere deg.')} 
+    else if (user.password !== passord) {
+      Alert.alert('Feil', 'Feil passord.')} 
+    else {
       Alert.alert('Velkommen', 'Du er nå logget inn!');
       setIsLoggedIn(true); // Sett brukeren som innlogget
     }
@@ -33,7 +33,6 @@ const handleLogin = async () => {
 const handleRegister = async () => {
   try {
     const users = await getAllUsers();
-
     if (users.find((u) => u.username === brukernavn)) {
       Alert.alert('Feil', 'Brukernavn er allerede registrert.');
     } else {

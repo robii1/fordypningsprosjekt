@@ -7,8 +7,7 @@ const getAllUsers = (req, res) => {
       if (err) {
         console.error('Feil ved henting av users:', err);
         res.status(500).send('Feil ved henting av users');
-      } else {
-        res.json(results);
+      } else {res.json(results);
       }
     });
   };
@@ -22,8 +21,7 @@ const addUser = (req, res) => {
     if (err) {
       console.error('Feil ved oppretting av bruker:', err);
       res.status(500).send('Feil ved oppretting av bruker');
-    } else {
-      res.send('Bruker opprettet');
+    } else { res.send('Bruker opprettet');
     }
   });
 };

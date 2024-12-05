@@ -12,42 +12,39 @@ const HistoryScreen = () => {
   const [filteredSessions, setFilteredSessions] = useState([]); // Data filtrert for valgt dato
 
   // Hent all treningshistorikk når skjermen får fokus
-  useFocusEffect(
-    useCallback(() => {
-      const fetchHistoryData = async () => {
-        try {
-          const data = await getAllTrainings();
-          setHistoryData(data);
-        } catch (error) {
-          console.error('Feil ved henting av all treningshistorikk:', error);
-        }
-      };
-      fetchHistoryData();
-    }, [])
-  );
+useFocusEffect(
+  useCallback(() => {
+    const fetchHistoryData = async () => {
+       try {
+         const data = await getAllTrainings();
+         setHistoryData(data);
+      } catch (error) {
+         console.error('Feil ved henting av all treningshistorikk:', error);
+      }
+    };
+    fetchHistoryData();
+  }, [])
+);
 
   // Oppdater filtrerte økter når en dato er valgt
-  useEffect(() => {
-    if (selectedDate) {
-      const fetchFilteredData = async () => {
-        try {
-          const data = await getTrainingsByDate(selectedDate);
-          setFilteredSessions(data);
-        } catch (error) {
-          console.error('Feil ved henting av treningsøkter:', error);
-        }
-      };
-      fetchFilteredData();
-    } else {
-      setFilteredSessions([]);
+useEffect(() => {
+  if (selectedDate) {
+    const fetchFilteredData = async () => {
+      try {
+        const data = await getTrainingsByDate(selectedDate);
+        setFilteredSessions(data);
+      } catch (error) {
+        console.error('Feil hentning treningsøkter:', error);
+      }
+    };
+    fetchFilteredData();
+  } else {
+     setFilteredSessions([]);
     }
-  }, [selectedDate]);
+}, [selectedDate]);
 
-  const markedDates = historyData.reduce((acc, item) => {
-
+const markedDates = historyData.reduce((acc, item) => {
 const date = item.dato
-
-  
     acc[date] = {
       selected: date === selectedDate,
       marked: true,
@@ -55,11 +52,11 @@ const date = item.dato
       dotColor: '#00c8ff',
     };
     return acc;
-  }, {});
+}, {});
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Treningshistorikk</Text>
+return (
+  <SafeAreaView style={styles.container}>
+    <Text style={styles.title}>Treningshistorikk</Text>
       <TreningKalender
         markedDates={markedDates}
         onDayPress={(day) => setSelectedDate(day.dateString)}
@@ -69,7 +66,7 @@ const date = item.dato
       )}
       <ØktListe sessions={filteredSessions} />
     </SafeAreaView>
-  );
+  )
 };
 
 export default HistoryScreen;
