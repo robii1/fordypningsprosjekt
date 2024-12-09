@@ -3,7 +3,9 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
 
 interface SettingsScreenProps {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>; //funksjonen for å logge ut
+  // setIsLoggedIn er en funksjon som: 
+  // tar state true eller false avhengig av innlogget og oppdaterer state.
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>; 
 }
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ setIsLoggedIn }) => {

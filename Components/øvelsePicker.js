@@ -8,6 +8,7 @@ const ØvelsePicker = ({ availableExercises, onSelect }) => (
     onValueChange={onSelect}>
     <Picker.Item label="Velg øvelse" value="" />
     {availableExercises.map((exercise) => (
+      // Går gjennom øvelsene i databasen
       <Picker.Item key={exercise.øvelseID} label={exercise.navn} value={exercise.navn} />
     ))}
   </Picker>

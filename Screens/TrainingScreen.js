@@ -61,7 +61,7 @@ const TrainingScreen = () => {
 
     const newTraining = exercises.map((exercise) => ({
       utøverID: 1,
-      dato: new Date(),
+      dato: new Date().toISOString().split('T')[0] ,//datoen settes til leselig, men det er noe rart med MySQL lagringen av datoer
       øvelsestype: exercise.øvelsestype,
       vekt: parseInt(exercise.vekt, 10),
       repetisjoner: parseInt(exercise.repetisjoner, 10),
@@ -76,9 +76,9 @@ const TrainingScreen = () => {
         await postTraining(training);
       }
       Alert.alert('Bra jobbet', 'Treningsøkten ble lagret!');
-      setExercises([]);
-      setTretthet('1');
-      setKommentar('');
+      setExercises([]); //Øvelsene settes
+      setTretthet('1'); //Tretthet settes 
+      setKommentar(''); //kommentar settes
     } catch (error) {
       console.error('Feil ved lagring av treningsøkt:', error);
     }
@@ -87,7 +87,7 @@ const TrainingScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Trening</Text>
-      
+      {/*Hentet fra Component - øvelsespicker */}
       <ØvelsePicker
         availableExercises={availableExercises}
         onSelect={(selected) => setØvelsestype(selected)}

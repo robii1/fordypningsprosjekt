@@ -15,7 +15,8 @@ const ØvelseListe = ({ exercises, onRemove }) => (
           </Text>
         </View>
         <TouchableOpacity onPress={() => onRemove(item.id)}>
-          <Text style={{ color: 'red', fontSize: 20 }}>X</Text>
+          {/* Lager en enkel X som symboliserer slett*/}
+          <Text style={{ color:'red', fontSize: 20 }}>   X</Text>
         </TouchableOpacity>
       </View>
     )}

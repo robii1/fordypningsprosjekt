@@ -8,8 +8,9 @@ import { getAllTrainings, getTrainingsByDate } from '../api';
 
 const HistoryScreen = () => {
   const [historyData, setHistoryData] = useState([]); // Hentede data
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [valgtDato, setValgtDato] = useState(null);
   const [filteredSessions, setFilteredSessions] = useState([]); // Data filtrert for valgt dato
+
 
   // Hent all treningshistorikk når skjermen får fokus
 useFocusEffect(
@@ -28,27 +29,27 @@ useFocusEffect(
 
   // Oppdater filtrerte økter når en dato er valgt
 useEffect(() => {
-  if (selectedDate) {
+  if (valgtDato) {
     const fetchFilteredData = async () => {
       try {
-        const data = await getTrainingsByDate(selectedDate);
+        const data = await getTrainingsByDate(valgtDato);
         setFilteredSessions(data);
       } catch (error) {
         console.error('Feil hentning treningsøkter:', error);
       }
     };
     fetchFilteredData();
-  } else {
-     setFilteredSessions([]);
-    }
-}, [selectedDate]);
-
-const markedDates = historyData.reduce((acc, item) => {
-const date = item.dato
-    acc[date] = {
-      selected: date === selectedDate,
+  } else { setFilteredSessions([])}
+}, [valgtDato]);
+ 
+//Får ikke dato fra database og den som skal være til å matche
+// Derfor blir det ikke markert.......
+const markertDato = historyData.reduce((acc, item) => {
+  const dato = item.dato.split('T')[0]
+    acc[dato] = {
+      selected: dato === valgtDato,
       marked: true,
-      selectedColor: '#00c8ff',
+      selectedColor: '##c2b36e',
       dotColor: '#00c8ff',
     };
     return acc;
@@ -58,11 +59,11 @@ return (
   <SafeAreaView style={styles.container}>
     <Text style={styles.title}>Treningshistorikk</Text>
       <TreningKalender
-        markedDates={markedDates}
-        onDayPress={(day) => setSelectedDate(day.dateString)}
-      />
-      {selectedDate && (
-        <Text style={styles.selectedDateText}>Økter for {selectedDate}:</Text>
+        markedDates={markertDato}
+        onDayPress={(day) => setValgtDato(day.dateString)}/>
+      
+      {valgtDato && (
+        <Text style={styles.selectedDateText}>Økter for {valgtDato}:</Text>
       )}
       <ØktListe sessions={filteredSessions} />
     </SafeAreaView>

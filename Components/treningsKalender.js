@@ -2,7 +2,7 @@ import React from 'react';
 import { Calendar } from 'react-native-calendars';
 import styles from '../styles/styles';
 
-const TreningKalender = ({ markedDates, onDayPress }) => {
+const TreningKalender = ({ markertDato, onDayPress }) => {
   return (
     <Calendar
       style={styles.calendar}
@@ -15,7 +15,8 @@ const TreningKalender = ({ markedDates, onDayPress }) => {
         selectedDayBackgroundColor: '#00c8ff',
       
       }}
-      markedDates={markedDates}
+      markingType="multi-dot"
+      markedDates={markertDato}
       onDayPress={onDayPress}
     />
   );

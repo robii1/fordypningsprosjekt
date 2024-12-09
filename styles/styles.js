@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     marginBottom: 15,
+    width: 300
   },
   detailsText: {
     color: '#fff',
