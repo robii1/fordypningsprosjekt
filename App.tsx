@@ -7,8 +7,9 @@ import HistoryScreen from './Screens/HistoryScreen';
 import TrainingScreen from './Screens/TrainingScreen';
 import SettingsScreen from './Screens/SettingsScreen';
 import LoginScreen from './Screens/login';
+import { TemaProvider } from './styles/styles'; 
 
-// Importer bilder for ikoner
+//  bilder for ikoner
 const homeIcon = require('./Pictures/home.png');
 const historyIcon = require('./Pictures/history.png');
 const playIcon = require('./Pictures/play.png');
@@ -20,6 +21,7 @@ export default function App() {
   const [erLoggetinn, setIsLoggedIn] = useState(false); // sett true for å skippe, denne styrer tilstand av innlogget
 
 return (
+  <TemaProvider>
   <NavigationContainer>
     {!erLoggetinn ? (
       <LoginScreen setIsLoggedIn={setIsLoggedIn} />) : (
@@ -44,7 +46,9 @@ return (
         <SettingsScreen setIsLoggedIn={setIsLoggedIn} />}
             options={{ title: 'Innstillinger' }}/>
         </Tab.Navigator>
+        
     )}
     </NavigationContainer>
+    </TemaProvider>
   );
 }

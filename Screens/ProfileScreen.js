@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import styles from '../styles/styles';
@@ -6,10 +6,12 @@ import øvelsesKnapper from '../Components/øvelsesKnapper';
 import BarChart from '../Components/barChart';
 import TreningsListe from '../Components/treningsListe';
 import { getAllTrainings } from '../api';
+import { temaKontekst } from '../styles/styles';
 
 const HomeScreen = () => {
   const [selectedExercise, setSelectedExercise] = useState('Knebøy');
   const [exerciseData, setExerciseData] = useState([]);
+  const { tema } = useContext(temaKontekst);
 
   // Hent data når skjermen får fokus
   useFocusEffect(
@@ -36,7 +38,7 @@ const HomeScreen = () => {
     />
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: tema }]}>
       <Text style={styles.title}>Velg en øvelse</Text>
       <øvelsesKnapper exercises={['Knebøy', 'Markløft', 'Benkpress']} selectedExercise={selectedExercise} onSelect={setSelectedExercise}/>
       {exerciseData.length > 0 ? renderBarChart() : <Text>Ingen data tilgjengelig</Text>}

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/styles';
 import TretthetPicker from '../Components/tretthetPicker';
 import ØvelseListe from '../Components/øvelseListe';
 import ØvelsePicker from '../Components/øvelsePicker';
 import { getAllExercises, postTraining } from '../api';
+import { temaKontekst } from '../styles/styles';
 
 const TrainingScreen = () => {
   const [øvelsestype, setØvelsestype] = useState('');
@@ -15,7 +16,7 @@ const TrainingScreen = () => {
   const [kommentar, setKommentar] = useState('');
   const [exercises, setExercises] = useState([]);
   const [availableExercises, setAvailableExercises] = useState([]);
-
+  const { tema } = useContext(temaKontekst);
  
   useEffect(() => {
     const fetchExercises = async () => {
@@ -85,7 +86,7 @@ const TrainingScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: tema }]}>
       <Text style={styles.title}>Trening</Text>
       {/*Hentet fra Component - øvelsespicker */}
       <ØvelsePicker

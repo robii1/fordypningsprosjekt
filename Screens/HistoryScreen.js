@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState,useContext, useEffect, useCallback } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import styles from '../styles/styles';
 import TreningKalender from '../Components/treningsKalender';
 import ØktListe from '../Components/øktListe';
 import { getAllTrainings, getTrainingsByDate } from '../api'; 
+import { temaKontekst } from '../styles/styles'; // konteksten
 
 const HistoryScreen = () => {
   const [historyData, setHistoryData] = useState([]); // Hentede data
   const [valgtDato, setValgtDato] = useState(null);
   const [filteredSessions, setFilteredSessions] = useState([]); // Data filtrert for valgt dato
-
+  const { tema } = useContext(temaKontekst);
 
   // Hent all treningshistorikk når skjermen får fokus
 useFocusEffect(
@@ -56,7 +57,7 @@ const markertDato = historyData.reduce((acc, item) => {
 }, {});
 
 return (
-  <SafeAreaView style={styles.container}>
+  <SafeAreaView style={[styles.container, { backgroundColor: tema }]}>
     <Text style={styles.title}>Treningshistorikk</Text>
       <TreningKalender
         markedDates={markertDato}

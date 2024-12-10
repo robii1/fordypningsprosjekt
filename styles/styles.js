@@ -1,7 +1,24 @@
 import { StyleSheet } from "react-native";
+import React, { createContext, useState } from 'react';
+
+//lager en kontekst for bakgrunn
+export const temaKontekst = createContext();
+
+//den PROVIDER for valgt tema
+export const TemaProvider = ({children }) => {
+  const [tema, setTema] = useState('#1e1e1e');
+
+  const brukTema = () => {
+    setTema((forrigeTema) => (forrigeTema === '#1e1e1e' ? 'gray': '#1e1e1e'));
+  }
+  return (
+    <temaKontekst.Provider value ={{ tema, brukTema}}>
+      {children}
+    </temaKontekst.Provider>
+  );
+};
 
 const styles = StyleSheet.create({
-  // Generelle komponenter
   container: {
     flex: 1,
     justifyContent: 'center',

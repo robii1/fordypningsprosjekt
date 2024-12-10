@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
+import { temaKontekst } from '../styles/styles'; // Importer konteksten
 
 interface SettingsScreenProps {
   // setIsLoggedIn er en funksjon som: 
@@ -9,16 +10,23 @@ interface SettingsScreenProps {
 }
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ setIsLoggedIn }) => {
+  const { tema, brukTema } = useContext(temaKontekst); // Hent tema og funksjonalitet for å endre det
+
   const handleLogout = () => {
     // settes til false og logger dermed ut
     setIsLoggedIn(false);
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: tema }]}>
       <Text style={styles.title}>Innstillinger</Text>
-      <TouchableOpacity style = {styles.loginBTN} onPress={handleLogout}>
-        <Text style = {styles.loginBtnText}>Logg ut</Text>
+
+      <TouchableOpacity style={styles.loginBTN} onPress={brukTema}>
+        <Text style={styles.loginBtnText}>Bytt bakgrunnsfarge</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.loginBTN} onPress={handleLogout}>
+        <Text style={styles.loginBtnText}>Logg ut</Text>
       </TouchableOpacity>
     </View>
   );
