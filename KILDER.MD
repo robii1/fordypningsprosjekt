@@ -17,3 +17,7 @@
 ### MySQL. Hentet fra https://dev.mysql.com/doc/ og query: https://www.w3schools.com/nodejs/default.asp
 
 ### Dotenv. Hentet fra https://www.codementor.io/@parthibakumarmurugesan/what-is-env-how-to-set-up-and-run-a-env-file-in-node-1pnyxw9yxj
+
+### Bcrypt. Hentet fra https://www.npmjs.com/package/bcrypt
+
+### Async. Hentet fra https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function

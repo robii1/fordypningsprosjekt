@@ -1,7 +1,7 @@
 const db = require('../db');
 
 // Hent alle treningsøkter
-
+// Denne må oppdateres slik at den henter ut også basert på ID
 const getAllTrainings = (req, res) => {
   const sql = 'SELECT * FROM Sessions';
   db.query(sql, (err, results) => {
@@ -25,6 +25,7 @@ const addTraining = (req, res) => {
 };
 
 // Hent treningsøkter basert på dato
+// Må også hente ut basert på ID
 const getTrainingsByDate = (req, res) => {
   const { dato } = req.params; 
   const sql = 'SELECT * FROM Sessions WHERE dato = ?';

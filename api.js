@@ -44,10 +44,9 @@ export const getTrainingsByDate = async (dato) => {
   }
 };
 //LOGG INN
-
-export const loginUser = async (credentials) => {
+export const loginUser = async (passordet) => {
   try {
-    const response = await api.post('/users/login', credentials);
+    const response = await api.post('/users/login', passordet);
     return response.data;
   } catch (error) {
     console.error('Feil ved innlogging:', error);

@@ -34,8 +34,7 @@ const HomeScreen = () => {
       volumeData={exerciseData.map((item) => ({
         ...item,
         totalVolume: item.vekt * item.repetisjoner * item.serier,
-      }))}
-    />
+      }))}/>
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: tema }]}>

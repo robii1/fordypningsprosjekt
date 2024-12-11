@@ -41,8 +41,7 @@ const TrainingScreen = () => {
       øvelsestype,
       repetisjoner,
       serier,
-      vekt,
-    };
+      vekt};
     setExercises([...exercises, newExercise]);
     setØvelsestype('');
     setRepetisjoner('');
@@ -61,7 +60,7 @@ const TrainingScreen = () => {
     }
 
     const newTraining = exercises.map((exercise) => ({
-      utøverID: 1,
+      utøverID: 1, //Foreløpig er den hardkodet men må settes lik User (id)
       dato: new Date().toISOString().split('T')[0] ,//datoen settes til leselig, men det er noe rart med MySQL lagringen av datoer
       øvelsestype: exercise.øvelsestype,
       vekt: parseInt(exercise.vekt, 10),
@@ -99,22 +98,20 @@ const TrainingScreen = () => {
         placeholder="Repetisjoner"
         keyboardType="numeric"
         value={repetisjoner}
-        onChangeText={setRepetisjoner}
-      />
+        onChangeText={setRepetisjoner}/>
       <TextInput
         style={styles.input}
         placeholder="Serier"
         keyboardType="numeric"
         value={serier}
-        onChangeText={setSerier}
-      />
+        onChangeText={setSerier}/>
       <TextInput
         style={styles.input}
         placeholder="Vekt (kg)"
         keyboardType="numeric"
         value={vekt}
-        onChangeText={setVekt}
-      />
+        onChangeText={setVekt}/>
+
       <TouchableOpacity onPress={addExercise}>
         <Text style={styles.loginBtnText}>+ Legg til</Text>
       </TouchableOpacity>
@@ -123,12 +120,7 @@ const TrainingScreen = () => {
 
       <Text style={styles.label}>Tretthet (1-10)</Text>
       <TretthetPicker selectedValue={tretthet} onChange={(value) => setTretthet(value)} />
-      <TextInput
-        style={styles.input}
-        placeholder="Kommentar"
-        value={kommentar}
-        onChangeText={setKommentar}
-      />
+      <TextInput style={styles.input} placeholder="Kommentar" value={kommentar} onChangeText={setKommentar}/>
       <TouchableOpacity style={styles.exerciseButton} onPress={finishSession}>
         <Text style={styles.exerciseButtonText}>Lagre økt</Text>
       </TouchableOpacity>

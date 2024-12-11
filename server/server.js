@@ -11,15 +11,14 @@ const PORT = 3000;
 // Middleware
 app.use(bodyParser.json());
 
-// Ruter
+// Ruterne
 app.use('/exercises', øvelseRoutes);
 app.use('/sessions', treningsregistreringRoutes);
 app.use('/users', brukerRoutes);
 
 // for å teste at jeg får kolbet til
 db.getConnection((err, connection) => {
-    if (err) {
-      console.error('database feilkobling:', err);
+    if (err) { console.error('database feilkobling:', err);
     } else {
       console.log('Koblet til databasen!');
       connection.release();
