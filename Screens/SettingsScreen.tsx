@@ -12,7 +12,7 @@ interface SettingsScreenProps {
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ setIsLoggedIn }) => {
   const { tema, brukTema } = useContext(temaKontekst); // Hent tema og funksjonalitet for å endre det
 
-  const handleLogout = () => {
+  const loggUt = () => {
     // settes til false og logger dermed ut
     setIsLoggedIn(false);
   };
@@ -25,7 +25,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ setIsLoggedIn }) => {
         <Text style={styles.loginBtnText}>Bytt bakgrunnsfarge</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBTN} onPress={handleLogout}>
+      <TouchableOpacity style={styles.loginBTN} onPress={loggUt}>
         <Text style={styles.loginBtnText}>Logg ut</Text>
       </TouchableOpacity>
     </View>

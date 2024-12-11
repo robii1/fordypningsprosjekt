@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/styles';
-import { getAllUsers, addUser } from '../api';
+import { getAllUsers, addUser, loginUser } from '../api';
 
 
 const LoginScreen = ({ setIsLoggedIn }) => {
@@ -9,28 +9,26 @@ const LoginScreen = ({ setIsLoggedIn }) => {
   const [passord, setPassord] = useState('');
   const [erRegistrert, setRegistrert] = useState(false);
 
-  // Logg inn
-const handleLogin = async () => {
-  try {
-    const users = await getAllUsers();
-    const user = users.find((u) => u.username === brukernavn);
-
-    if (!user) {
-      Alert.alert('Feil', 'Bruker finnes ikke. Prøv å registrere deg.')} 
-    else if (user.password !== passord) {
-      Alert.alert('Feil', 'Feil passord.')} 
-    else {
+  //logg inn med hash
+  const loginFunk = async () => {
+    try {
+      const response = await loginUser({ username: brukernavn, password: passord });
       Alert.alert('Velkommen', 'Du er nå logget inn!');
       setIsLoggedIn(true); // Sett brukeren som innlogget
+    } catch (error) {
+      if (error.response?.status === 401) {
+        Alert.alert('Feil', 'Feil passord.');
+      } else if (error.response?.status === 404) {
+        Alert.alert('Feil', 'Bruker finnes ikke. Prøv å registrere deg.');
+      } else {
+        console.error('Feil:', error);
+        Alert.alert('Feil', 'Kunne ikke logge inn.');
+      }
     }
-  } catch (error) {
-    console.error('Feil:', error);
-    Alert.alert('Feil', 'Kunne ikke logge inn.');
-  }
-};
+  };
 
  // Registrer
-const handleRegister = async () => {
+const registerFunk = async () => {
   try {
     const users = await getAllUsers();
     if (users.find((u) => u.username === brukernavn)) {
@@ -53,7 +51,7 @@ const handleRegister = async () => {
       <TextInput  style={styles.input} placeholder="Brukernavn" value={brukernavn} onChangeText={setBrukernavn}/>
       <TextInput style={styles.input} placeholder="Passord" secureTextEntry value={passord} onChangeText={setPassord}/>
       
-      <TouchableOpacity style={styles.loginBTN} onPress={erRegistrert ? handleRegister : handleLogin}>
+      <TouchableOpacity style={styles.loginBTN} onPress={erRegistrert ? registerFunk : loginFunk}>
       <Text style={styles.loginBtnText}>{erRegistrert ? 'Registrer' : 'Logg inn'}</Text>
       </TouchableOpacity>
       
