@@ -9,7 +9,8 @@ import { getAllTrainings } from '../api';
 import { temaKontekst } from '../styles/styles';
 
 const HomeScreen = () => {
-  const [selectedExercise, setSelectedExercise] = useState('Knebøy');
+  //setter bare knebøy som default
+  const [selectedExercise, setSelectedExercise] = useState('Knebøy'); 
   const [exerciseData, setExerciseData] = useState([]);
   const { tema } = useContext(temaKontekst);
 

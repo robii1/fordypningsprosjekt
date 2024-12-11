@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
-import { temaKontekst } from '../styles/styles'; // Importer konteksten
+import { temaKontekst } from '../styles/styles'; 
 
 interface SettingsScreenProps {
   // setIsLoggedIn er en funksjon som: 

@@ -18,6 +18,7 @@ export const TemaProvider = ({children }) => {
   );
 };
 
+//resten av stilene for appen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
