@@ -2,14 +2,16 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
 import { temaKontekst } from '../styles/styles'; 
+//Nick. React useContext and Typescript. Hentet fra
+// https://medium.com/@storydev123/react-usecontext-and-typescript-c359065375e1
 
-interface SettingsScreenProps {
+interface SettingsScreen {
   // setIsLoggedIn er en funksjon som: 
   // tar state true eller false avhengig av innlogget og oppdaterer state.
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>; 
 }
 
-const SettingsScreen: React.FC<SettingsScreenProps> = ({ setIsLoggedIn }) => {
+const SettingsScreen: React.FC<SettingsScreen> = ({ setIsLoggedIn }) => {
   const { tema, brukTema } = useContext(temaKontekst); // Hent tema og funksjonalitet for å endre det
 
   const loggUt = () => {
