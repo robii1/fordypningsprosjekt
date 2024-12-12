@@ -3,7 +3,7 @@ import { FlatList, View, Text } from 'react-native';
 import styles from '../styles/styles';
 
 const ØktListe = ({ sessions }) => {
-  if (sessions.length === 0) {
+  if (sessions.length === 0) { //Dersom sessions er lik 0
     return <Text style={styles.label}>Du har ingen økter denne datoen</Text>};
 
   return (

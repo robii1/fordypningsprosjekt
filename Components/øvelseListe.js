@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, View, Text, TouchableOpacity } from 'react-native';
 import styles from '../styles/styles';
 
-const ØvelseListe = ({ exercises, onRemove }) => (
+const ØvelseListe = ({ exercises, remove }) => (
   <FlatList
     data={exercises}
     keyExtractor={(item) => item.id.toString()}
@@ -14,8 +14,8 @@ const ØvelseListe = ({ exercises, onRemove }) => (
             Reps: {item.repetisjoner}, Serier: {item.serier}, Vekt: {item.vekt}kg
           </Text>
         </View>
-        <TouchableOpacity onPress={() => onRemove(item.id)}>
-          {/* Lager en enkel X som symboliserer slett*/}
+        <TouchableOpacity onPress={() => remove(item.id)}>
+          {/* bruker bare en enkel X som symboliserer slett*/}
           <Text style={{ color:'red', fontSize: 20 }}>   X</Text>
         </TouchableOpacity>
       </View>

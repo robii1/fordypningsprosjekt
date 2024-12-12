@@ -3,8 +3,7 @@ const bcrypt = require('bcrypt');
 
 // Hent alle brukere
 const getAllUsers = (req, res) => {
-    const sql = 'SELECT * FROM Users';
-    db.query(sql, (err, results) => {
+    db.query('SELECT * FROM Users', (err, results) => {
       if (err) {
         console.error('Feil ved henting av users:', err);
         res.status(500).send('Feil ved henting av users');
@@ -35,9 +34,8 @@ const getAllUsers = (req, res) => {
 // Logg inn funksjon
 const loginUser = (req, res) => {
   const { username, password } = req.body;
-
-  const sql = 'SELECT * FROM Users WHERE username = ?';
-  db.query(sql, [username], async (err, results) => {
+  
+  db.query('SELECT * FROM Users WHERE username = ?', [username], async (err, results) => {
     if (err) {
       console.error('Feil ved henting av bruker:', err);
       res.status(500).send('Feil ved henting av bruker');

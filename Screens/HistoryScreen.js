@@ -13,7 +13,7 @@ const HistoryScreen = () => {
   const [filteredSessions, setFilteredSessions] = useState([]); // Data filtrert for valgt dato
   const { tema } = useContext(temaKontekst);
 
-  // Hent all treningshistorikk når skjermen får fokus
+  // all treningshistorikk når skjermen får fokus
 useFocusEffect(
   useCallback(() => {
     const fetchHistoryData = async () => {
@@ -21,7 +21,7 @@ useFocusEffect(
          const data = await getAllTrainings();
          setHistoryData(data);
       } catch (error) {
-         console.error('Feil ved henting av all treningshistorikk:', error);
+         console.error('Feil ved henting treningshistorikk:', error);
       }
     };
     fetchHistoryData();
@@ -64,8 +64,7 @@ return (
         onDayPress={(day) => setValgtDato(day.dateString)}/>
       
       {valgtDato && (
-        <Text style={styles.selectedDateText}>Økter for {valgtDato}:</Text>
-      )}
+        <Text style={styles.selectedDateText}>Økter for {valgtDato}:</Text>)}
       <ØktListe sessions={filteredSessions} />
     </SafeAreaView>
   )
