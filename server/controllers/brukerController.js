@@ -6,7 +6,8 @@ const getAllUsers = (req, res) => {
     db.query('SELECT * FROM Users', (err, results) => {
       if (err) {
         console.error('Feil ved henting av users:', err);
-        res.status(500).send('Feil ved henting av users');
+        //intern serverfeil
+        res.status(500).send('Feil ved henting av users'); //intern serverfeil
       } else {res.json(results);
       }
     });
@@ -38,17 +39,18 @@ const loginUser = (req, res) => {
   db.query('SELECT * FROM Users WHERE username = ?', [username], async (err, results) => {
     if (err) {
       console.error('Feil ved henting av bruker:', err);
-      res.status(500).send('Feil ved henting av bruker');
+      
+      res.status(500).send('Feil ved henting av bruker') //intern serverfeil
     } else if (results.length === 0) { //sjekk om brukeren finnes
-      res.status(404).send('Bruker ikke funnet');
+      res.status(404).send('Bruker ikke funnet'); //ikke funnet
     } else {
       //sjekk at passordet matcher med bcrpyt
       const user = results[0];
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {//ingen match
-        res.status(401).send('Feil passord');
+        res.status(401).send('Feil passord'); //ikke auitorisert
       } else {
-        res.status(200).send('Innlogging vellykket');
+        res.status(200).send('Innlogging vellykket'); //alt ok
       }
     }
   });

@@ -90,23 +90,21 @@ const TrainingScreen = () => {
       {/*Hentet fra Component - øvelsespicker */}
       <ØvelsePicker
         availableExercises={availableExercises}
-        onSelect={(selected) => setØvelsestype(selected)}
-      />
+        onSelect={(selected) => setØvelsestype(selected)}/>
 
-      <TextInput
-        style={styles.input}
+      <TextInput style={styles.input}
         placeholder="Repetisjoner"
         keyboardType="numeric"
         value={repetisjoner}
         onChangeText={setRepetisjoner}/>
-      <TextInput
-        style={styles.input}
+
+      <TextInput style={styles.input}
         placeholder="Serier"
         keyboardType="numeric"
         value={serier}
         onChangeText={setSerier}/>
-      <TextInput
-        style={styles.input}
+
+      <TextInput style={styles.input}
         placeholder="Vekt (kg)"
         keyboardType="numeric"
         value={vekt}
@@ -116,7 +114,7 @@ const TrainingScreen = () => {
         <Text style={styles.loginBtnText}>+ Legg til</Text>
       </TouchableOpacity>
 
-      <ØvelseListe exercises={exercises} onRemove={removeExercise} />
+      <ØvelseListe exercises={exercises} remove={removeExercise} />
 
       <Text style={styles.label}>Tretthet (1-10)</Text>
       <TretthetPicker selectedValue={tretthet} onChange={(value) => setTretthet(value)} />

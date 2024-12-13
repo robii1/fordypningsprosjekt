@@ -4,7 +4,7 @@ const db = require('../db');
 const getAllExercises = (req, res) => {
   db.query('SELECT * FROM Exercises', (err, results) => {
     if (err) { console.error('Feil ved henting av øvelser:', err);
-      res.status(500).send('Feil ved henting av øvelser');
+      res.status(500).send('Feil ved henting av øvelser'); //intern serverfeil
     } else { res.json(results);
     }
   });

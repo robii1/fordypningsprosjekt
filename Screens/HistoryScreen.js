@@ -47,8 +47,7 @@ useEffect(() => {
 // Derfor blir det ikke markert.......
 const markertDato = historyData.reduce((acc, item) => {
   const dato = item.dato.split('T')[0]
-    acc[dato] = {
-      selected: dato === valgtDato,
+    acc[dato] = { selected: dato === valgtDato,
       marked: true,
       selectedColor: '##c2b36e',
       dotColor: '#00c8ff',

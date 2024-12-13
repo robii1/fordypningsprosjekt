@@ -18,7 +18,8 @@ const settingsIcon = require('./Pictures/settings.png');
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [erLoggetinn, setIsLoggedIn] = useState(false); // sett true for å skippe, denne styrer tilstand av innlogget
+  // sett true for å skippe, denne styrer tilstand av innlogget - se SETTINGsScreen
+  const [erLoggetinn, setIsLoggedIn] = useState(false); 
 
 return (
   <TemaProvider>

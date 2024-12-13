@@ -6,7 +6,7 @@ const getAllTrainings = (req, res) => {
   const sql = 'SELECT * FROM Sessions';
   db.query(sql, (err, results) => {
     if (err) { console.error('Feil ved henting av treningsøkter:', err);
-      res.status(500).send('Feil ved henting av treningsøkter');
+      res.status(500).send('Feil ved henting av treningsøkter'); //intern
     } else { res.json(results)}
   });
 };
@@ -18,7 +18,7 @@ const addTraining = (req, res) => {
   VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [utøverID, dato, øvelsestype, vekt, repetisjoner, serier, tretthet, kommentar], (err, results) => {
     if (err) {
       console.error('Feil ved lagring av treningsøkt:', err.message);
-      res.status(500).send('Feil ved lagring av treningsøkt');
+      res.status(500).send('Feil ved lagring av treningsøkt'); //intern serverfeil
     } else { res.send('Treningsøkt lagt til')}
   });
 };
@@ -30,7 +30,7 @@ const getTrainingsByDate = (req, res) => {
   db.query('SELECT * FROM Sessions WHERE dato = ?', [dato], (err, results) => {
     if (err) {
       console.error('Feil ved henting av treningsøkter for dato:', err);
-      res.status(500).send('Feil ved henting av treningsøkter for dato');
+      res.status(500).send('Feil ved henting av treningsøkter for dato'); //intern server feil
     } else { res.json(results)}
   });
 };

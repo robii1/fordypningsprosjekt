@@ -20,8 +20,8 @@ const HomeScreen = () => {
       const fetchData = async () => {
         try {
           const data = await getAllTrainings();
-          const filteredData = data.filter((session) => session.øvelsestype === selectedExercise);
-          setExerciseData(filteredData);
+          const filtrert = data.filter((session) => session.øvelsestype === selectedExercise);
+          setExerciseData(filtrert);
         } catch (error) {
           console.error('Feil', error);
         }
@@ -32,8 +32,7 @@ const HomeScreen = () => {
 
   const renderBarChart = () => 
     <BarChart
-      volumeData={exerciseData.map((item) => ({
-        ...item,
+      volumeData={exerciseData.map((item) => ({ ...item,
         totalVolume: item.vekt * item.repetisjoner * item.serier,
       }))}/>
 

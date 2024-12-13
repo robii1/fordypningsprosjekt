@@ -12,11 +12,11 @@ Dette er en React Native-applikasjon utviklet for å loggføre treningsøkter, v
 ```
 2. **Eller bruk følgende skripter**
 
-#Android:
+### Android:
 ```bash
 npx react-native run-android
 ```
-#iOS: 
+### iOS: 
 ```bash
 npx react-native run-ios
 ```

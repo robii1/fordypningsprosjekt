@@ -2,10 +2,9 @@ import React from 'react';
 import { FlatList, View, Text } from 'react-native';
 import styles from '../styles/styles';
 
-const TreningsListe = ({ data }) => {
+const TreningsListe = ({ trening }) => {
   return (
-    <FlatList
-      data={data}
+  <FlatList data={trening}
       keyExtractor={(item) => item.treningsregistreringID.toString()}
       renderItem={({ item }) => (
         <View style={styles.historyItem}>
@@ -18,7 +17,7 @@ const TreningsListe = ({ data }) => {
           <Text style={styles.detailsText}>Kommentar: {item.kommentar}</Text>
         </View>
       )}
-    />
+  />
   );
 };
 

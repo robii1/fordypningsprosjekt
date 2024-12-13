@@ -72,6 +72,6 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
-# Ignorer miljøvariabel-filer
+# Lagt til for å ikke pushe denne
+# Altså ignorer miljøvariabel-filer
 .env
