@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import styles from '../styles/styles';
 
 const BarChart = ({ volumeData }) => {
-  const maxVolume = Math.max(...volumeData.map((item) => item.totalVolume), 0)
+  const maxVolume = volumeData.reduce((max, itm) => Math.max(max, itm.totalVolume), 0);
   //hvis volum = 0 returner teksten
   if (maxVolume === 0) 
     return <Text>Ingen data tilgjengelig</Text>;

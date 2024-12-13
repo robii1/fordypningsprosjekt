@@ -10,10 +10,7 @@ const TretthetPicker = ({ selectedValue, onChange }) => {
     pickerTall.push(<Picker.Item key={i} label={i.toString()} value={i.toString()} />);
   }
   return (
-    <Picker
-      selectedValue={selectedValue}
-      style={styles.picker}
-      onValueChange={onChange}>
+    <Picker selectedValue={selectedValue} style={styles.picker} onValueChange={onChange}>
       {pickerTall}
     </Picker>
   );

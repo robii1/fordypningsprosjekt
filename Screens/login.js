@@ -16,9 +16,10 @@ const LoginScreen = ({ setIsLoggedIn }) => {
       Alert.alert('Velkommen', 'Du er nå logget inn!');
       setIsLoggedIn(true); // Sett brukeren som innlogget
     } catch (error) {
-      if (error.response?.status === 401) {
+      //
+      if (error.response?.status === 401) { // uatorisert
         Alert.alert('Feil', 'Feil passord.');
-      } else if (error.response?.status === 404) {
+      } else if (error.response?.status === 404) { // ikke funnet
         Alert.alert('Feil', 'Bruker finnes ikke. Prøv å registrere deg.');
       } else {
         console.error('Feil:', error);
@@ -31,9 +32,10 @@ const LoginScreen = ({ setIsLoggedIn }) => {
 const registerFunk = async () => {
   try {
     const users = await getAllUsers();
-    if (users.find((u) => u.username === brukernavn)) {
+    if (users.find((u) => u.username === brukernavn)) { // navn = navn som finnes
       Alert.alert('Feil', 'Brukernavn er allerede registrert.');
-    } else {
+    } else { //ellers legg til
+      //id håndteres automatisk i MySQL (AUTO INCREMENT)
       const nyBruker = { username: brukernavn, password: passord };
       await addUser(nyBruker);
       Alert.alert('Registrert!', 'Bruker registrert. Logg inn for å fortsette.');
@@ -49,7 +51,9 @@ const registerFunk = async () => {
     <View style={styles.container}>
       <Text style={styles.title}>{erRegistrert ? 'Registrer deg' : 'Logg inn'}</Text>
       <TextInput  style={styles.input} placeholder="Brukernavn" value={brukernavn} onChangeText={setBrukernavn}/>
-      <TextInput style={styles.input} placeholder="Passord" secureTextEntry value={passord} onChangeText={setPassord}/>
+      <TextInput style={styles.input} placeholder="Passord" 
+      secureTextEntry //skjuler passord 
+      value={passord} onChangeText={setPassord}/>
       
       <TouchableOpacity style={styles.loginBTN} onPress={erRegistrert ? registerFunk : loginFunk}>
       <Text style={styles.loginBtnText}>{erRegistrert ? 'Registrer' : 'Logg inn'}</Text>
