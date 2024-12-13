@@ -11,19 +11,20 @@ Dette er en React Native-applikasjon utviklet for å loggføre treningsøkter, v
    npx react-native start
 ```
 2. **Eller bruk følgende skripter**
+
+#Android:
 ```bash
-Android:
-
 npx react-native run-android
-
+```
 #iOS: 
-
+```bash
 npx react-native run-ios
 ```
 3. **Start server**
 ## Husk å være tilkoblet NTNU sitt nettverk:
 ```bash
 # cd server
+# åpne en annen terminal i prosjektet og cd/server
 node server.js
 
 ```
