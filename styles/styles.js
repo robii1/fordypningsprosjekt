@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import React, { createContext, useState } from 'react';
-
-//lager en kontekst for bakgrunn
+//https://legacy.reactjs.org/docs/context.html
+// en kontekst for bakgrunn
 export const temaKontekst = createContext();
 
 //den PROVIDER for valgt tema

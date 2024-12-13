@@ -9,9 +9,9 @@ import { temaKontekst } from '../styles/styles'; // konteksten
 
 const HistoryScreen = () => {
   const [historyData, setHistoryData] = useState([]); // Hentede data
-  const [valgtDato, setValgtDato] = useState(null);
+  const [valgtDato, setValgtDato] = useState(null); //dato
   const [filteredSessions, setFilteredSessions] = useState([]); // Data filtrert for valgt dato
-  const { tema } = useContext(temaKontekst);
+  const { tema } = useContext(temaKontekst); //konteksten elelr bakgrunnsfargen 
 
   // all treningshistorikk når skjermen får fokus
 useFocusEffect(
@@ -46,7 +46,8 @@ useEffect(() => {
 //Får ikke dato fra database og den som skal være til å matche
 // Derfor blir det ikke markert.......
 const markertDato = historyData.reduce((acc, item) => {
-  const dato = item.dato.split('T')[0]
+  const dato = item.dato.split('T')[0] //Slit sptring for å få første del av dato
+  //hvis ikke kommer tidsformat osv.
     acc[dato] = { selected: dato === valgtDato,
       marked: true,
       selectedColor: '##c2b36e',
@@ -58,10 +59,9 @@ const markertDato = historyData.reduce((acc, item) => {
 return (
   <SafeAreaView style={[styles.container, { backgroundColor: tema }]}>
     <Text style={styles.title}>Treningshistorikk</Text>
-      <TreningKalender
-        markedDates={markertDato}
-        onDayPress={(day) => setValgtDato(day.dateString)}/>
-      
+      <TreningKalender markedDates={markertDato}
+        onDayPress={(day) => setValgtDato(day.dateString)} />
+
       {valgtDato && (
         <Text style={styles.selectedDateText}>Økter for {valgtDato}:</Text>)}
       <ØktListe sessions={filteredSessions} />
