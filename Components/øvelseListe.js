@@ -14,7 +14,9 @@ const ØvelseListe = ({ exercises, remove }) => (
             Reps: {item.repetisjoner}, Serier: {item.serier}, Vekt: {item.vekt}kg
           </Text>
         </View>
-        <TouchableOpacity onPress={() => remove(item.id)}>
+        <TouchableOpacity onPress={() => 
+          //sletter den som er trykket på - knyttet til removeExercise 
+          remove(item.id)}>
           {/* bruker bare en enkel X som symboliserer slett*/}
           <Text style={{ color:'red', fontSize: 20 }}>   X</Text>
         </TouchableOpacity>

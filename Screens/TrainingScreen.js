@@ -32,6 +32,7 @@ const TrainingScreen = () => {
   }, []);
 
   const addExercise = () => {
+    //sjekker at alt er fylt ut
     if (!øvelsestype || !repetisjoner || !serier || !vekt) {
       Alert.alert('Feil', 'Alt må fylles ut!');
       return;
@@ -42,14 +43,16 @@ const TrainingScreen = () => {
       repetisjoner,
       serier,
       vekt};
-    setExercises([...exercises, newExercise]);
+    setExercises([...exercises, newExercise])//setter øvelser som kopi av øvelser og nyøvelse
     setØvelsestype('');
     setRepetisjoner('');
     setSerier('');
     setVekt('');
   };
 
+
   const removeExercise = (id) => {
+    //filter lager ny liste som fjerner den spesifikke id
     setExercises(exercises.filter((exercise) => exercise.id !== id));
   };
 
